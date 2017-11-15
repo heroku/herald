@@ -2,6 +2,18 @@
 
 
 [[projects]]
+  name = "github.com/garyburd/redigo"
+  packages = ["internal","redis"]
+  revision = "47dc60e71eed504e3ef8e77ee3c6fe720f3be57f"
+  version = "v1.3.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/gocelery/gocelery"
+  packages = ["."]
+  revision = "972c809603510c059c57b81cada024c57171c67e"
+
+[[projects]]
   name = "github.com/mailgun/mailgun-go"
   packages = ["."]
   revision = "a4002e2df2e8ca2da6a6fbb4a72871b504e49f50"
@@ -13,9 +25,21 @@
   revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
   version = "v0.8.0"
 
+[[projects]]
+  name = "github.com/satori/go.uuid"
+  packages = ["."]
+  revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
+  version = "v1.1.0"
+
+[[projects]]
+  branch = "master"
+  name = "github.com/streadway/amqp"
+  packages = ["."]
+  revision = "ff791c2d22d3f1588b4e2cc71a9fba5e1da90654"
+
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "15b9e827ae5fb6777861d5848004326dd810cc6759fc85aaa891c600c3c681ea"
+  inputs-digest = "cd1dd61cfbcf9fb02aabba4f534afd3ddda97ca4f5d5335f3cfe13d53faa6650"
   solver-name = "gps-cdcl"
   solver-version = 1
