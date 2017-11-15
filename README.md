@@ -1,4 +1,4 @@
-# Herald — Yeilding Messages (for Languages) from Upon High
+# Herald — Yielding Messages (for Languages) from Upon High
 
 This application exists to empower Language Owners of new releases for their
 respective languages and supporting libraries.
