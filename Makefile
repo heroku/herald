@@ -6,3 +6,5 @@ worker: compile
 
 compile:
 	go install ./...
+deps:
+	dep ensure
