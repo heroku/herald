@@ -1,6 +1,6 @@
 # Herald — Yielding Messages (for Languages) from Upon High
 
-**This repo is a work in progress.**
+**This repo is truly a work in progress.**
 
 This application exists to empower Language Owners of new releases for their
 respective languages and supporting libraries.
