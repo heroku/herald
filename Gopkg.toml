@@ -28,3 +28,7 @@
 [[constraint]]
   branch = "master"
   name = "github.com/gocelery/gocelery"
+
+[[constraint]]
+  branch = "master"
+  name = "github.com/hashicorp/go-getter"

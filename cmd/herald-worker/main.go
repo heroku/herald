@@ -1,11 +1,26 @@
 package main
 
 import "os"
-// import "strings"
 import "fmt"
 import "time"
 import "github.com/gocelery/gocelery"
+import "github.com/hashicorp/go-getter"
 
+
+func get_buildpacks() [2]string {
+    var buildpacks [2]string
+
+    buildpacks[0] = "https://github.com/heroku/heroku-buildpack-python/archive/master.zip"
+    buildpacks[1] = "https://github.com/heroku/heroku-buildpack-php/archive/master.zip"
+
+    return buildpacks
+}
+
+func download_buildpacks() {
+    buildpacks := get_buildpacks()
+    _ = buildpacks
+    getter.Get("example", "https://github.com/heroku/heroku-buildpack-python/archive/master.zip")
+}
 
 func add(a int, b int) int {
     fmt.Println("hello world")
@@ -24,7 +39,7 @@ func main() {
     // MAILGUN_PUBLIC_KEY = os.Getenv("MAILGUN_PUBLIC_KEY")
     // MAILGUN_DOMAIN = os.Getenv("MAILGUN_DOMAIN")
 
-
+    download_buildpacks()
     // Setup AMPQ environment variables.
     var RABBITMQ_BIGWIG_URL string
 
@@ -50,7 +65,7 @@ func main() {
 
 
     // TODO: Main loop here, of checking buildpacks here for status updates.
-    time.Sleep(60 * time.Second)
+    time.Sleep(10 * time.Second)
 
 
 }
