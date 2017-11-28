@@ -1,8 +1,8 @@
-run: compile
-	../../../../bin/herald
+worker: 
+	go run cmd/herald-worker/main.go
 
-worker: compile
-	../../../../bin/herald-worker
+proc: 
+	go run cmd/herald/main.go 
 
 compile:
 	go install ./...
