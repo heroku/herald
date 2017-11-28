@@ -37,10 +37,10 @@ func main() {
 			}
 		}
 
-		log.Print("Sleeping for 5 minutes…")
+		log.Print("Sleeping for 10 minutes…")
 
-		// Sleep for five minutes. 
-		time.Sleep(5*time.Minute)
+		// Sleep for ten minutes. 
+		time.Sleep(10*time.Minute)
 
 		}
 
