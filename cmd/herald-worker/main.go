@@ -1,24 +1,24 @@
 package main
 
-import "os"
-import "fmt"
-import "time"
-import "github.com/gocelery/gocelery"
-import "github.com/heroku/herald/lib"
+import "github.com/heroku/herald"
 // todo: name that herlad
+import "time"
+import "log"
 
 
 
 func main() {
 
-    for {
-        
-        // Do the buldpack thing. 
-        lib.
-    
-        // Sleep for five minutes. 
-        time.sleep(5*time.Minute)
-    
-    }
+	for {
+
+		// Do the buldpack thing. 
+		herald.DownloadBuildpacks()
+
+		log.Print("Sleeping for 5 minutes…")
+		
+		// Sleep for five minutes. 
+		time.Sleep(5*time.Minute)
+
+		}
 
 }

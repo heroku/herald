@@ -14,22 +14,10 @@
   revision = "9fd32a8b3d3d3f9d43c341bfe098430e07609480"
 
 [[projects]]
-  name = "github.com/garyburd/redigo"
-  packages = ["internal","redis"]
-  revision = "47dc60e71eed504e3ef8e77ee3c6fe720f3be57f"
-  version = "v1.3.0"
-
-[[projects]]
   name = "github.com/go-ini/ini"
   packages = ["."]
   revision = "32e4c1e6bc4e7d0d8451aa6b75200d19e37a536a"
   version = "v1.32.0"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/gocelery/gocelery"
-  packages = ["."]
-  revision = "972c809603510c059c57b81cada024c57171c67e"
 
 [[projects]]
   branch = "master"
@@ -79,18 +67,6 @@
   version = "v0.8.0"
 
 [[projects]]
-  name = "github.com/satori/go.uuid"
-  packages = ["."]
-  revision = "879c5887cd475cd7864858769793b2ceb0d44feb"
-  version = "v1.1.0"
-
-[[projects]]
-  branch = "master"
-  name = "github.com/streadway/amqp"
-  packages = ["."]
-  revision = "ff791c2d22d3f1588b4e2cc71a9fba5e1da90654"
-
-[[projects]]
   name = "github.com/ulikunitz/xz"
   packages = [".","internal/hash","internal/xlog","lzma"]
   revision = "0c6b41e72360850ca4f98dc341fd999726ea007f"
@@ -99,6 +75,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b46b195c8834e4eaf1c07958f9b06af7453db264d083a100a6e2b2a91725a7d6"
+  inputs-digest = "7198e74aa670d4bad5d88c1cb81fe96a2f2ee464137ab514c6e99abc4d49e5c6"
   solver-name = "gps-cdcl"
   solver-version = 1

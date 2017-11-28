@@ -1,8 +1,8 @@
-package lib
+package herald
 
-import "os"
+// import "os"
 import "fmt"
-import "time"
+// import "time"
 import "github.com/hashicorp/go-getter"
 import "io/ioutil"
 import "log"
@@ -26,19 +26,21 @@ func DownloadBuildpacks() {
 	
 	// create temp directory
 	// use 'fake' for now
-    target, err := ioutil.TempDir("", "buildpacks")
+	target, err := ioutil.TempDir("", "buildpacks")
 	if err != nil {
 		log.Fatal(err)
 	}
-    
+
 	
 	// Download and unpack each Zipball from GitHub. 
-    for _, tb := range(getBuildpackZipballs()) {
-        getter.Get(target, tb)
-    }
+	for _, tb := range(getBuildpackZipballs()) {
+		log.Printf("Downloading '%s' to '%s'…", tb, target)
+		getter.Get(target, tb)
+	}
 }
 
-func ExecutesBuildpacks() {
- glob('*/updater/detect'
+// func ExecutesBuildpacks() {
+
+//  glob('*/updater/detect'
  
-}
+// }
