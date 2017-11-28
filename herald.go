@@ -7,6 +7,7 @@ import "github.com/hashicorp/go-getter"
 import "io/ioutil"
 import "log"
 import "path/filepath"
+import "strings"
 
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
@@ -21,6 +22,15 @@ type Buildpack struct{
 	Path string
 	// ExecutablePath string
 	Name string
+}
+
+type Executable struct{
+	Path string
+}
+
+func (e Executable) String() string {
+	sl := strings.Split(e.Path, "/")
+	return sl[len(sl) - 1]
 }
 
 func (b Buildpack) ZipballURI() string {
@@ -44,13 +54,24 @@ func (b Buildpack) BPDownload() (Buildpack, string) {
 }
 
 func (b Buildpack) String() string {
-	return fmt.Sprintf("<Buildpack name='%s'>", b.Name)
+	return b.Name
 }
 
-func (b Buildpack) FindVersionScripts() []string {
-	log.Print(fmt.Sprintf("%s/versions/*", b.Path))
-	results, _ := filepath.Glob(fmt.Sprintf("%s/versions/*", b.Path))
+func (b Buildpack) FindVersionScripts() []Executable {
+	results := []Executable{}
+
+	glob_results, _ := filepath.Glob(fmt.Sprintf("%s/versions/*", b.Path))
+	for _, result := range(glob_results) {
+		results = append(results, NewExecutable(result))
+	}
+
 	return results
+}
+
+func NewExecutable(path string) Executable {
+	return Executable{
+		Path: path,
+	}
 }
 
 func NewBuildpack(name string) Buildpack {
@@ -69,9 +90,3 @@ func GetBuildpacks() []Buildpack {
 	
 	return buildpacks
 }
-
-// func ExecutesBuildpacks() {
-
-//  glob('*/updater/detect'
- 
-// }
