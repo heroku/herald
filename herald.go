@@ -8,6 +8,8 @@ import "log"
 import "path/filepath"
 import "strings"
 import "os"
+import "os/exec"
+// import "io"
 
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
@@ -45,6 +47,17 @@ func (e Executable) EnsureExecutable() {
 		// TODO: return error, etc. 
 		log.Fatal(err)
 	}
+}
+
+// Executes the given executable, and returns results.
+func (e Executable) Execute() []string {
+	out, err := exec.Command(e.Path).Output()
+	if err != nil {
+		// TODO: Update this to return, etc. 
+		log.Fatal(err)
+	}
+	return strings.Split(string(out), "\n")
+
 }
 
 // Returns the GitHub ZipBall URI for the given buildpack. 

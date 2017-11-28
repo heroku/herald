@@ -4,6 +4,7 @@ import "github.com/heroku/herald"
 // todo: name that herlad
 import "time"
 import "log"
+import "fmt"
 
 
 
@@ -28,8 +29,11 @@ func main() {
 				// TODO: Ensure chmod for the executable.
 				exe.EnsureExecutable()
 
+				// Execute the executable, print the results. 
+				fmt.Print(exe.Execute())
+
 				// 
-				log.Printf("Execututing '%s:%s' script…", bp, exe)
+				log.Printf("Executing '%s:%s' script…", bp, exe)
 			}
 		}
 
