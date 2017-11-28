@@ -17,9 +17,12 @@ func main() {
 		// Iterate over them.
 		for _, bp := range(buildpacks) {
 			// Download and extract each Buildpack.
-			path := bp.Download()
+			bp, path := bp.BPDownload()
 
 			log.Printf("Buildpack '%s' downloaded to '%s'", bp, path)
+
+			executables := bp.FindVersionScripts()
+			log.Print(executables)
 		}
 
 		log.Print("Sleeping for 5 minutes…")

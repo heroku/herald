@@ -6,9 +6,11 @@ import "fmt"
 import "github.com/hashicorp/go-getter"
 import "io/ioutil"
 import "log"
+import "path/filepath"
 
-const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/master.zip"
-var BUILDPACKS = []string { "python", "php", "nodejs", "ruby" }
+const BP_BRANCH = "versions"
+const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
+var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 
 
 type Version string
@@ -22,17 +24,22 @@ type Buildpack struct{
 }
 
 func (b Buildpack) ZipballURI() string {
-	return fmt.Sprintf(BP_TARBALL_TEMPLATE, b.Name)
+	return fmt.Sprintf(BP_TARBALL_TEMPLATE, b.Name, BP_BRANCH)
 }
 
-func (b Buildpack) Download() string {
+func (b Buildpack) BPDownload() (Buildpack, string) {
 	target, _ := ioutil.TempDir("", "buildpacks")
 
 	log.Printf("Downloading '%s'…", b.Name)
 
 	getter.Get(target, b.ZipballURI())
 
-	return target
+	// The branch to base this off of. 
+
+	// Set the Path.
+	b.Path = target + fmt.Sprintf("/heroku-buildpack-%s-%s", b.Name, BP_BRANCH)
+
+	return b, target
 	
 }
 
@@ -40,10 +47,14 @@ func (b Buildpack) String() string {
 	return fmt.Sprintf("<Buildpack name='%s'>", b.Name)
 }
 
+func (b Buildpack) FindVersionScripts() []string {
+	log.Print(fmt.Sprintf("%s/versions/*", b.Path))
+	results, _ := filepath.Glob(fmt.Sprintf("%s/versions/*", b.Path))
+	return results
+}
+
 func NewBuildpack(name string) Buildpack {
 	return Buildpack{
-		// Path: nil,
-		// ExecutablePath: path + "/bin/execute",
 		Name: name,
 	}
 }
@@ -53,11 +64,6 @@ func GetBuildpacks() []Buildpack {
 
 	buildpacks := []Buildpack{}
 	for _, bp := range(BUILDPACKS) {
-	// log.Printf("Downloading '%s'…", bp)
-
-	// err := getter.Get(target, tb)
-	// if err != nil {
-	// 	return err
 		buildpacks = append(buildpacks, NewBuildpack(bp))
 	}
 	
