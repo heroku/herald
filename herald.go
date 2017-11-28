@@ -8,7 +8,7 @@ import "io/ioutil"
 import "log"
 
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/master.zip"
-var BUILDPACKS = []string { "python", "php", "nodejs" }
+var BUILDPACKS = []string { "python", "php", "nodejs", "ruby" }
 
 
 type Version string
@@ -34,6 +34,10 @@ func (b Buildpack) Download() string {
 
 	return target
 	
+}
+
+func (b Buildpack) String() string {
+	return fmt.Sprintf("<Buildpack name='%s'>", b.Name)
 }
 
 func NewBuildpack(name string) Buildpack {

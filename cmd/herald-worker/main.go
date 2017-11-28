@@ -11,10 +11,15 @@ func main() {
 
 	for {
 
-		// Do the buldpack thing. 
+		// Get a list of the buildpacks (as types).
 		buildpacks := herald.GetBuildpacks()
+
+		// Iterate over them.
 		for _, bp := range(buildpacks) {
-			log.Print(bp.Download())
+			// Download and extract each Buildpack.
+			path := bp.Download()
+
+			log.Printf("Buildpack '%s' downloaded to '%s'", bp, path)
 		}
 
 		log.Print("Sleeping for 5 minutes…")
