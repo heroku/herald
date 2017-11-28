@@ -14,8 +14,11 @@ const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archi
 var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 
 
+// TODO: Maybe remove. 
 type Version string
 
+
+// A Buildpack, which seems inherintly useful for this utility. 
 type Buildpack struct{
 	Versions []Version
 	Tarball string
@@ -24,19 +27,24 @@ type Buildpack struct{
 	Name string
 }
 
+// An Executable, provided by a buildpack, for collecting version information. 
 type Executable struct{
 	Path string
 }
 
+// String representation of Executable. 
 func (e Executable) String() string {
 	sl := strings.Split(e.Path, "/")
 	return sl[len(sl) - 1]
 }
 
+// Returns the GitHub ZipBall URI for the given buildpack. 
 func (b Buildpack) ZipballURI() string {
 	return fmt.Sprintf(BP_TARBALL_TEMPLATE, b.Name, BP_BRANCH)
 }
 
+// Downloads the given buildpack to a temporary directory.
+// Returns a new Buildpack object, as well as the target. 
 func (b Buildpack) BPDownload() (Buildpack, string) {
 	target, _ := ioutil.TempDir("", "buildpacks")
 
@@ -53,10 +61,13 @@ func (b Buildpack) BPDownload() (Buildpack, string) {
 	
 }
 
+// String representatino of Buildpack. 
 func (b Buildpack) String() string {
 	return b.Name
 }
 
+// Finds executables from a given buildpack, with globbing.
+// Rerturns a slice of the Executable type. 
 func (b Buildpack) FindVersionScripts() []Executable {
 	results := []Executable{}
 
@@ -68,18 +79,21 @@ func (b Buildpack) FindVersionScripts() []Executable {
 	return results
 }
 
+// Creates a new Executable type. 
 func NewExecutable(path string) Executable {
 	return Executable{
 		Path: path,
 	}
 }
 
+// Creates a new Buildpack type. 
 func NewBuildpack(name string) Buildpack {
 	return Buildpack{
 		Name: name,
 	}
 }
 
+// Generates a list of Buildpack objects, to be used by this utility. 
 func GetBuildpacks() []Buildpack {
 	// Download and unpack each Zipball from GitHub. 
 
