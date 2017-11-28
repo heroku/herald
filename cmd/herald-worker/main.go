@@ -4,7 +4,7 @@ import "github.com/heroku/herald"
 // todo: name that herlad
 import "time"
 import "log"
-import "fmt"
+// import "fmt"
 
 
 
@@ -26,14 +26,17 @@ func main() {
 			executables := bp.FindVersionScripts()
 			for _, exe := range(executables) {
 
+				log.Printf("Executing '%s:%s' script…", bp, exe)
+
 				// TODO: Ensure chmod for the executable.
 				exe.EnsureExecutable()
 
 				// Execute the executable, print the results. 
-				fmt.Print(exe.Execute())
+				results := exe.Execute()
+				log.Printf("%s:%s results: %s", bp, exe, results)
 
 				// 
-				log.Printf("Executing '%s:%s' script…", bp, exe)
+				
 			}
 		}
 
