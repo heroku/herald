@@ -4,8 +4,10 @@ import "os"
 import "fmt"
 import "time"
 import "github.com/hashicorp/go-getter"
+import "io/ioutil"
+import "log"
 
-var BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/master.zip"
+const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/master.zip"
 var BUILDPACKS = []string { "python", "php", "nodejs" }
 
 func getBuildpackZipballs() []string {
@@ -24,7 +26,11 @@ func DownloadBuildpacks() {
 	
 	// create temp directory
 	// use 'fake' for now
-    target := "fake"
+    target, err := ioutil.TempDir("", "buildpacks")
+	if err != nil {
+		log.Fatal(err)
+	}
+    
 	
 	// Download and unpack each Zipball from GitHub. 
     for _, tb := range(getBuildpackZipballs()) {
@@ -35,9 +41,4 @@ func DownloadBuildpacks() {
 func ExecutesBuildpacks() {
  glob('*/updater/detect'
  
-}
-
-func add(a int, b int) int {
-    fmt.Println("hello world")
-    return a + b
 }
