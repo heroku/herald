@@ -16,13 +16,19 @@ func main() {
 
 		// Iterate over them.
 		for _, bp := range(buildpacks) {
+
 			// Download and extract each Buildpack.
 			bp, path := bp.BPDownload()
-
 			log.Printf("Buildpack '%s' downloaded to '%s'!", bp, path)
 
+			// Find all version executables for the given buildpack. 
 			executables := bp.FindVersionScripts()
 			for _, exe := range(executables) {
+
+				// TODO: Ensure chmod for the executable.
+				exe.EnsureExecutable()
+
+				// 
 				log.Printf("Execututing '%s:%s' script…", bp, exe)
 			}
 		}

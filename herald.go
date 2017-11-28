@@ -2,12 +2,12 @@ package herald
 
 // import "os"
 import "fmt"
-// import "time"
 import "github.com/hashicorp/go-getter"
 import "io/ioutil"
 import "log"
 import "path/filepath"
 import "strings"
+import "os"
 
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
@@ -36,6 +36,15 @@ type Executable struct{
 func (e Executable) String() string {
 	sl := strings.Split(e.Path, "/")
 	return sl[len(sl) - 1]
+}
+
+// Ensures that the given executable is… executable. 
+func (e Executable) EnsureExecutable() {
+	// TODO: Chmod to the proper permissions. 
+	if err := os.Chmod(e.Path, 0777); err != nil {
+		// TODO: return error, etc. 
+		log.Fatal(err)
+	}
 }
 
 // Returns the GitHub ZipBall URI for the given buildpack. 
