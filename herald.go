@@ -9,7 +9,6 @@ import "path/filepath"
 import "strings"
 import "os"
 import "os/exec"
-// import "io"
 
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
