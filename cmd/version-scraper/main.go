@@ -1,11 +1,8 @@
 package main
 
 import "github.com/heroku/herald"
-// todo: name that herlad
 import "time"
 import "log"
-// import "fmt"
-
 
 
 func main() {
