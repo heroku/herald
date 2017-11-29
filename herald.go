@@ -89,11 +89,9 @@ func (b Buildpack) String() string {
 }
 
 // Determines wether a given path is a file or not.
-func isDirectory(path string) (bool) {
+func isDirectory(path string) (bool, error) {
     fileInfo, err := os.Stat(path)
-    // return fileInfo.IsRegular(), err
-    _ = err
-    return fileInfo.IsDir()
+    return fileInfo.IsDir(), err
 }
 
 // Finds executables from a given buildpack, with globbing.
@@ -105,7 +103,8 @@ func (b Buildpack) FindVersionScripts() []Executable {
 	for _, result := range(glob_results) {
 
 		// Only yield a result if the glob result is a file.
-		if ! isDirectory(result) {
+		is_directory, _ := isDirectory(result)
+		if ! is_directory {
 			results = append(results, NewExecutable(result))
 		}
 
