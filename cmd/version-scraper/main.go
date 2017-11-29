@@ -34,8 +34,6 @@ func main() {
 				// Execute the executable, print the results. 
 				results := exe.Execute()
 				log.Printf("%s:%s results: %s", bp, exe, results)
-
-				// 
 				
 			}
 		}
