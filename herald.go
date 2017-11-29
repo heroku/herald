@@ -89,8 +89,8 @@ func (b Buildpack) String() string {
 
 // Determines wether a given path is a file or not.
 func isDirectory(path string) (bool, error) {
-    fileInfo, err := os.Stat(path)
-    return fileInfo.IsDir(), err
+	fileInfo, err := os.Stat(path)
+	return fileInfo.IsDir(), err
 }
 
 // Finds executables from a given buildpack, with globbing.
