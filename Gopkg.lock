@@ -43,12 +43,6 @@
   revision = "0b12d6b5"
 
 [[projects]]
-  name = "github.com/mailgun/mailgun-go"
-  packages = ["."]
-  revision = "a4002e2df2e8ca2da6a6fbb4a72871b504e49f50"
-  version = "v1.1.0"
-
-[[projects]]
   branch = "master"
   name = "github.com/mitchellh/go-homedir"
   packages = ["."]
@@ -61,12 +55,6 @@
   revision = "a61a99592b77c9ba629d254a693acffaeb4b7e28"
 
 [[projects]]
-  name = "github.com/pkg/errors"
-  packages = ["."]
-  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
-  version = "v0.8.0"
-
-[[projects]]
   name = "github.com/ulikunitz/xz"
   packages = [".","internal/hash","internal/xlog","lzma"]
   revision = "0c6b41e72360850ca4f98dc341fd999726ea007f"
@@ -75,6 +63,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "b46b195c8834e4eaf1c07958f9b06af7453db264d083a100a6e2b2a91725a7d6"
+  inputs-digest = "fdefa6a55fc36c7e24cf47afa788aa07bf2ddd55416c56129f3da1ef877fa0e3"
   solver-name = "gps-cdcl"
   solver-version = 1

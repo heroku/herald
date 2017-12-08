@@ -1,11 +1,8 @@
 worker: 
-	go run cmd/herald-worker/main.go
+	go run cmd/version-scraper/main.go
 
-process:
-	go run cmd/herald-worker/main.go
-
-worker: compile
-	../../../../bin/herald-worker
+bin-worker: compile
+	../../../../bin/version-scraper
 
 compile:
 	go install ./...
