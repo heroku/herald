@@ -69,8 +69,6 @@ func (b Buildpack) ZipballURI() string {
 func (b *Buildpack) Download() string {
 	target, _ := ioutil.TempDir("", "buildpacks")
 
-	log.Printf("Downloading '%s'…", b.Name)
-
 	getter.Get(target, b.ZipballURI())
 
 	// The branch to base this off of.
