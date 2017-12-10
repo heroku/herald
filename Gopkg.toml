@@ -32,3 +32,9 @@
 [[constraint]]
   branch = "master"
   name = "github.com/hashicorp/go-getter"
+
+[metadata.heroku]
+  root-package = "github.com/heroku/herald"
+  go-version = "go1.8.3"
+  install = [ "./cmd/..."]
+  ensure = "true"
