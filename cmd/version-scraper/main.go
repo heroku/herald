@@ -16,7 +16,7 @@ func main() {
 		for _, bp := range(buildpacks) {
 
 			// Download and extract each Buildpack.
-			bp, path := bp.BPDownload()
+			path := bp.Download()
 
 			log.Printf("Buildpack '%s' downloaded to '%s'!", bp, path)
 

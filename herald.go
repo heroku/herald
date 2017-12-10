@@ -66,7 +66,7 @@ func (b Buildpack) ZipballURI() string {
 
 // Downloads the given buildpack to a temporary directory.
 // Returns a new Buildpack object, as well as the target.
-func (b Buildpack) BPDownload() (Buildpack, string) {
+func (b *Buildpack) Download() string {
 	target, _ := ioutil.TempDir("", "buildpacks")
 
 	log.Printf("Downloading '%s'…", b.Name)
@@ -78,7 +78,7 @@ func (b Buildpack) BPDownload() (Buildpack, string) {
 	// Set the Path.
 	b.Path = target + fmt.Sprintf("/heroku-buildpack-%s-%s", b.Name, BP_BRANCH)
 
-	return b, target
+	return b.Path
 
 }
 
