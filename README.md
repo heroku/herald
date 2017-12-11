@@ -17,3 +17,16 @@ All languages, except Node.js, should benefit greatly from this system.
 This system will be written in the Go programming language.
 
 ☤
+
+Boostrapping Locally
+--------------------
+
+Install [dep](https://github.com/golang/dep):
+
+    $ go get -u github.com/golang/dep/cmd/dep
+
+Then, checkout this repository and resolve it's dependencies:
+
+    $ dep ensure
+
+That's it!
