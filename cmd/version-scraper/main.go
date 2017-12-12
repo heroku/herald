@@ -8,14 +8,14 @@ import "log"
 
 func main() {
 
-    color.NoColor = false
-    
-    red := color.New(color.FgRed).SprintFunc()
-    magenta := color.New(color.FgMagenta).SprintFunc()
-    green := color.New(color.FgGreen).SprintFunc()
-    yellow := color.New(color.FgYellow).SprintFunc()
-    bold := color.New(color.Bold, color.FgWhite).SprintFunc()
-    
+	color.NoColor = false
+
+	red := color.New(color.FgRed).SprintFunc()
+	magenta := color.New(color.FgMagenta).SprintFunc()
+	green := color.New(color.FgGreen).SprintFunc()
+	yellow := color.New(color.FgYellow).SprintFunc()
+	bold := color.New(color.Bold, color.FgWhite).SprintFunc()
+
 	for {
 
 		// Get a list of the buildpacks (as types).
@@ -25,9 +25,9 @@ func main() {
 		for _, bp := range(buildpacks) {
 
 			// Download and extract each Buildpack.
-            log.Printf(bold("Downloading '%s'…"), red(bp.Name))
+			log.Printf(bold("Downloading '%s'…"), red(bp.Name))
 			path := bp.Download()
-            
+
 			log.Printf("Buildpack '%s' downloaded to '%s'!", red(bp), green(path))
 
 			// Find all version executables for the given buildpack.
