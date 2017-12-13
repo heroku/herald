@@ -6,8 +6,14 @@ import "time"
 import "log"
 
 
+
 func main() {
 
+	// Redis stuff.
+	redis := herald.RedisConnect()
+	_ = redis
+
+	// Color Stuff.
 	color.NoColor = false
 
 	red := color.New(color.FgRed).SprintFunc()
@@ -42,6 +48,10 @@ func main() {
 
 				// Execute the executable, print the results.
 				results := exe.Execute()
+
+				// for _, result := range(results) {
+
+				// }
 
 				// Log results.
 				log.Printf("%s:%s results: %s", red(bp), magenta(exe), results)

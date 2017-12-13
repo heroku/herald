@@ -3,6 +3,7 @@ package herald
 // import "os"
 import "fmt"
 import "github.com/hashicorp/go-getter"
+import "github.com/garyburd/redigo/redis"
 import "io/ioutil"
 import "log"
 import "path/filepath"
@@ -10,13 +11,28 @@ import "strings"
 import "os"
 import "os/exec"
 
+// Buildpack Information.
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
 var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 
+// Redis Stuff.
+var REDIS_URL = os.Getenv("REDIS_URL")
+
+func RedisConnect() redis.Conn {
+	c, err := redis.DialURL(REDIS_URL)
+	if err != nil {
+		// Fail epically.
+		log.Fatal(err)
+	}
+	defer c.Close()
+
+	return c
+}
 
 // TODO: Maybe remove.
 type Version string
+
 
 
 // A Buildpack, which seems inherintly useful for this utility.
