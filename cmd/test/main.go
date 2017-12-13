@@ -1,9 +1,10 @@
 package main
 
 import "github.com/heroku/herald"
+import "fmt"
 
 func main() {
 
 	python := herald.NewBuildpack("python")
-	python.GetTargets()
+	fmt.Println(python.GetTargets())
 }

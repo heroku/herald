@@ -109,11 +109,20 @@ func NewBuildpack(name string) Buildpack {
 }
 
 
-func (b Buildpack) GetTargets() {
+func (b Buildpack) GetTargets() []string {
 	redis := NewRedis(REDIS_URL)
+	targets := []string{}
+	_ = targets
 
-	fmt.Println(redis.GetTargets(b.Name))
-	// log.Printf(results)
+	target_set := redis.GetTargets(b.Name)
+
+	for _, target := range(target_set.ToSlice()) {
+		// fmt.Println(target.(string))
+		targets = append(targets, target.(string))
+	}
+
+	return targets
+
 }
 
 
