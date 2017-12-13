@@ -9,8 +9,7 @@ import "fmt"
 func main() {
 
 	// Redis stuff.
-	redis := herald.RedisConnect()
-	_ = redis
+	redis := herald.NewRedis("")
 
 	// Color Stuff.
 	color.NoColor = false
@@ -53,10 +52,8 @@ func main() {
 					value := "UNKNOWN"
 
 					// Store the results in Redis.
-					_, err := redis.Do("SETNX", key, value)
-					if err != nil {
-						log.Fatal(err)
-					}
+					redis.Connection.Do("SETNX", key, value)
+
 
 				}
 
