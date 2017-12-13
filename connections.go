@@ -7,6 +7,7 @@ import "strings"
 import "encoding/json"
 import "github.com/deckarep/golang-set"
 import "github.com/garyburd/redigo/redis"
+import "sort"
 
 // Redis Stuff.
 var REDIS_URL = os.Getenv("REDIS_URL")
@@ -95,7 +96,8 @@ func (r Redis) GetTargetVersions(bp string, target string) []Version {
 		results = append(results, unpack)
 	}
 
-	// TODO: Sort results by time.
+
+	// TODO: Sort results by time?
 
 
 
