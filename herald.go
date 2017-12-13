@@ -26,9 +26,10 @@ func RedisConnect() redis.Conn {
 		// Fail epically.
 		log.Fatal(err)
 	}
-	defer c.Close()
 
+	// defer c.Close()
 	return c
+
 }
 
 // TODO: Maybe remove.
@@ -70,7 +71,7 @@ func (e Executable) Execute() []string {
 		// TODO: Update this to return, etc.
 		log.Fatal(err)
 	}
-	return strings.Split(string(out), "\n")
+	return strings.Split(strings.Trim(string(out), "\n"), "\n")
 
 }
 

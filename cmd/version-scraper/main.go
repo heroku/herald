@@ -4,8 +4,7 @@ import "github.com/heroku/herald"
 import "github.com/fatih/color"
 import "time"
 import "log"
-
-
+import "fmt"
 
 func main() {
 
@@ -49,9 +48,17 @@ func main() {
 				// Execute the executable, print the results.
 				results := exe.Execute()
 
-				// for _, result := range(results) {
+				for _, result := range(results) {
+					key := fmt.Sprintf("%s:%s:%s", bp, exe, result)
+					value := "UNKNOWN"
 
-				// }
+					// Store the results in Redis.
+					_, err := redis.Do("SETNX", key, value)
+					if err != nil {
+						log.Fatal(err)
+					}
+
+				}
 
 				// Log results.
 				log.Printf("%s:%s results: %s", red(bp), magenta(exe), results)
