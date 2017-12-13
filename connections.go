@@ -47,16 +47,24 @@ func (r *Redis) Close() {
 	defer r.Connection.Close()
 }
 
-func (r Redis) GetTargets(bp string) mapset.Set {
+func (r Redis) GetTargets(bp string) []Target {
 	targets := mapset.NewSet()
+	results := []Target{}
 
 	selector := fmt.Sprintf("%s:%s", bp, "*")
 	keys, _ := redis.Strings(r.Connection.Do("KEYS", selector))
+
+	// Add Redis results to set.
 	for _, key := range keys {
 		targets.Add(strings.Split(key, ":")[1])
 	}
 
-	return targets
+	// Convert set results into Target type.
+	for _, target := range targets.ToSlice() {
+		results = append(results, NewTarget(NewBuildpack(bp), target.(string)))
+	}
+
+	return results
 }
 
 func (r Redis) GetTargetVersions(bp string, target string) mapset.Set {

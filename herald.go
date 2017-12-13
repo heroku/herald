@@ -111,21 +111,8 @@ func NewBuildpack(name string) Buildpack {
 
 func (b Buildpack) GetTargets() []Target {
 	redis := NewRedis(REDIS_URL)
-	targets := []Target{}
-	_ = targets
-
-	target_set := redis.GetTargets(b.Name)
-
-	for _, target := range(target_set.ToSlice()) {
-		// fmt.Println(target.(string))
-		targets = append(targets, NewTarget(b, target.(string)))
-	}
-
-	return targets
-
+	return redis.GetTargets(b.Name)
 }
-
-
 
 
 type Target struct{
