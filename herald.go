@@ -109,16 +109,16 @@ func NewBuildpack(name string) Buildpack {
 }
 
 
-func (b Buildpack) GetTargets() []string {
+func (b Buildpack) GetTargets() []Target {
 	redis := NewRedis(REDIS_URL)
-	targets := []string{}
+	targets := []Target{}
 	_ = targets
 
 	target_set := redis.GetTargets(b.Name)
 
 	for _, target := range(target_set.ToSlice()) {
 		// fmt.Println(target.(string))
-		targets = append(targets, target.(string))
+		targets = append(targets, NewTarget(b, target.(string)))
 	}
 
 	return targets
@@ -128,11 +128,19 @@ func (b Buildpack) GetTargets() []string {
 
 
 
-
 type Target struct{
 	Buildpack	Buildpack
 	Name		string
 	Versions	[]VersionDocument
+}
+
+func NewTarget(bp Buildpack, name string) Target {
+
+	return Target {
+		Buildpack: bp,
+		Name: name,
+		Versions: nil,
+	}
 }
 
 
