@@ -52,7 +52,10 @@ func main() {
 					value := "UNKNOWN"
 
 					// Store the results in Redis.
-					redis.Connection.Do("SETNX", key, value)
+					_, err := redis.Connection.Do("SETNX", key, value)
+					if err != nil {
+						log.Fatal(err)
+					}
 
 
 				}

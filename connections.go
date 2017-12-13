@@ -37,7 +37,6 @@ func (r *Redis) Connect() redis.Conn {
 		log.Fatal(err)
 	}
 
-	// defer c.Close()
 	return c
 }
 
