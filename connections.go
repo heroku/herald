@@ -60,5 +60,13 @@ func (r Redis) GetTargets(bp string) mapset.Set {
 }
 
 func (r Redis) GetTagetVersions(bp string, target string) {
+	targets := mapset.NewSet()
 
+	selector := fmt.Sprintf("%s:%s:%s", bp, target, "*")
+	keys, _ := redis.Strings(r.Connection.Do("KEYS", selector))
+	for _, key := range keys {
+		targets.Add(strings.Split(key, ":")[1])
+	}
+
+	return targets
 }
