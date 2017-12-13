@@ -126,16 +126,10 @@ type Target struct{
 	Versions	[]Version
 }
 
+// Returns Versions for a given buildpack.
 func (t Target) GetVersions() []Version {
 	redis := NewRedis(REDIS_URL)
-
-	version_set := redis.GetTargetVersions(t.Buildpack.Name, t.Name)
-	fmt.Println("here:")
-	fmt.Println(version_set)
-
-	return []Version{}
-	// return targets
-
+	return redis.GetTargetVersions(t.Buildpack.Name, t.Name)
 }
 
 func NewTarget(bp Buildpack, name string) Target {
