@@ -3,8 +3,17 @@ package main
 import "github.com/kataras/iris"
 import "os"
 import "fmt"
+import "github.com/heroku/herald"
 
-var PORT = os.Getenv("PORT")
+func getEnv(key, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
+
+// PORT to bind to.
+var PORT = getEnv("PORT", "8080")
 
 func main() {
 	app := iris.Default()
@@ -12,7 +21,24 @@ func main() {
 	// Method:   GET
 	// Resource: http://localhost:8080/
 	app.Handle("GET", "/", func(ctx iris.Context) {
-	 ctx.HTML("Hello world!")
+		results := []string{}
+		heraldBuildpacks := herald.GetBuildpacks()
+
+		for _, bp := range heraldBuildpacks {
+			results = append(results, bp.Name)
+		}
+
+		ctx.JSON(iris.Map{"buildpack": results})
+	})
+
+	app.Get("/buildpacks/{bp:string}", func(ctx iris.Context) {
+		bp := ctx.Params().Get("bp")
+
+		buildpack := herald.NewBuildpack(bp)
+		// targets := buildpack.GetTargets()
+
+		// ctx.JSON(iris.Map{"buildpack": buildpack.Name, "targets": targets})
+		ctx.JSON(iris.Map{"buildpack": buildpack.Name})
 	})
 
 	// same as app.Handle("GET", "/ping", [...])
