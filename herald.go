@@ -19,6 +19,7 @@ var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 
 
 type Version struct {
+	Name		string
 	Target		Target
 	Published	string	`json:"id"`
 	IsValid		bool	`json:"is_valid"`
@@ -36,8 +37,17 @@ func NewVersion() Version {
 	}
 }
 
-func (vd Version) JSON() []byte {
-	b, _ := json.Marshal(vd)
+func (v Version) String() string {
+	return fmt.Sprintf(
+		"<Version name='%s' published=%#v, valid=%#v>",
+		v.Name,
+		v.IsPublished,
+		v.IsValid,
+	)
+}
+
+func (v Version) JSON() []byte {
+	b, _ := json.Marshal(v)
 	return b
 }
 
