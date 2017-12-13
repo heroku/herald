@@ -33,11 +33,12 @@ func RedisConnect() redis.Conn {
 }
 
 // TODO: Maybe remove.
-type Version string
+// type Version string
+
 
 // A Buildpack, which seems inherintly useful for this utility.
 type Buildpack struct{
-	Versions []Version
+	// Versions []Version
 	Tarball string
 	Path string
 	// ExecutablePath string
