@@ -109,10 +109,14 @@ func NewBuildpack(name string) Buildpack {
 }
 
 
+// Returns Targets for a given buildpack.
 func (b Buildpack) GetTargets() []Target {
 	redis := NewRedis(REDIS_URL)
 	return redis.GetTargets(b.Name)
 }
+
+
+
 
 
 type Target struct{
@@ -141,6 +145,10 @@ func NewTarget(bp Buildpack, name string) Target {
 		Versions: nil,
 	}
 }
+
+
+
+
 
 
 // An Executable, provided by a buildpack, for collecting version information.
