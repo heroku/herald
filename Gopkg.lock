@@ -14,6 +14,12 @@
   revision = "9fd32a8b3d3d3f9d43c341bfe098430e07609480"
 
 [[projects]]
+  name = "github.com/deckarep/golang-set"
+  packages = ["."]
+  revision = "1d4478f51bed434f1dadf96dcd9b43aabac66795"
+  version = "v1.7"
+
+[[projects]]
   name = "github.com/fatih/color"
   packages = ["."]
   revision = "570b54cabe6b8eb0bc2dfce68d964677d63b5260"
@@ -93,6 +99,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "191dd1158e4c5ee3505e8f6ed440d63a18d3aacaaf098b7d638d95069ad8d744"
+  inputs-digest = "fdae3f4c580c9af87ce95742cd4fa6e7550f5f97c721551e6e5db80b43656284"
   solver-name = "gps-cdcl"
   solver-version = 1

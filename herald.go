@@ -18,11 +18,10 @@ const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archi
 var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 
 
-
 type VersionDocument struct {
-	Published		string	`json:"id"`
-	IsValid			bool	`json:"is_valid"`
-	IsPublished		bool	`json:"is_published"`
+	Published	string	`json:"id"`
+	IsValid		bool	`json:"is_valid"`
+	IsPublished	bool	`json:"is_published"`
 }
 
 func NewVersionDocument() VersionDocument {
@@ -42,44 +41,13 @@ func (vd VersionDocument) JSON() []byte {
 }
 
 
+
+
 // A Buildpack, which seems inherintly useful for this utility.
 type Buildpack struct {
-	// Versions []Version
-	Tarball string
-	Path string
-	// ExecutablePath string
-	Name string
-}
-
-// An Executable, provided by a buildpack, for collecting version information.
-type Executable struct{
-	Path string
-}
-
-// String representation of Executable.
-func (e Executable) String() string {
-	sl := strings.Split(e.Path, "/")
-	return sl[len(sl) - 1]
-}
-
-// Ensures that the given executable is… executable.
-func (e Executable) EnsureExecutable() {
-	// TODO: Chmod to the proper permissions.
-	if err := os.Chmod(e.Path, 0777); err != nil {
-		// TODO: return error, etc.
-		log.Fatal(err)
-	}
-}
-
-// Executes the given executable, and returns results.
-func (e Executable) Execute() []string {
-	out, err := exec.Command(e.Path).Output()
-	if err != nil {
-		// TODO: Update this to return, etc.
-		log.Fatal(err)
-	}
-	return strings.Split(strings.Trim(string(out), "\n"), "\n")
-
+	Tarball	string
+	Path	string
+	Name	string
 }
 
 // Returns the GitHub ZipBall URI for the given buildpack.
@@ -133,6 +101,63 @@ func (b Buildpack) FindVersionScripts() []Executable {
 	return results
 }
 
+// Creates a new Buildpack type.
+func NewBuildpack(name string) Buildpack {
+	return Buildpack{
+		Name: name,
+	}
+}
+
+
+func (b Buildpack) GetTargets() {
+	redis := NewRedis(REDIS_URL)
+
+	fmt.Println(redis.GetTargets(b.Name))
+	// log.Printf(results)
+}
+
+
+
+
+
+type Target struct{
+	Buildpack	Buildpack
+	Name		string
+	Versions	[]VersionDocument
+}
+
+
+// An Executable, provided by a buildpack, for collecting version information.
+type Executable struct{
+	Path	string
+}
+
+// String representation of Executable.
+func (e Executable) String() string {
+	sl := strings.Split(e.Path, "/")
+	return sl[len(sl) - 1]
+}
+
+// Ensures that the given executable is… executable.
+func (e Executable) EnsureExecutable() {
+	// TODO: Chmod to the proper permissions.
+	if err := os.Chmod(e.Path, 0777); err != nil {
+		// TODO: return error, etc.
+		log.Fatal(err)
+	}
+}
+
+// Executes the given executable, and returns results.
+func (e Executable) Execute() []string {
+	out, err := exec.Command(e.Path).Output()
+	if err != nil {
+		// TODO: Update this to return, etc.
+		log.Fatal(err)
+	}
+	return strings.Split(strings.Trim(string(out), "\n"), "\n")
+
+}
+
 // Creates a new Executable type.
 func NewExecutable(path string) Executable {
 	return Executable{
@@ -140,12 +165,9 @@ func NewExecutable(path string) Executable {
 	}
 }
 
-// Creates a new Buildpack type.
-func NewBuildpack(name string) Buildpack {
-	return Buildpack{
-		Name: name,
-	}
-}
+
+
+
 
 // Generates a list of Buildpack objects, to be used by this utility.
 func GetBuildpacks() []Buildpack {
