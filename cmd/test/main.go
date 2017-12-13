@@ -6,5 +6,6 @@ import "fmt"
 func main() {
 
 	python := herald.NewBuildpack("python")
-	fmt.Println(python.GetTargets())
+	t := python.GetTargets()[0]
+	fmt.Println(t.GetVersions())
 }

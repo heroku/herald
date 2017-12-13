@@ -59,13 +59,13 @@ func (r Redis) GetTargets(bp string) mapset.Set {
 	return targets
 }
 
-func (r Redis) GetTagetVersions(bp string, target string) mapset.Set {
+func (r Redis) GetTargetVersions(bp string, target string) mapset.Set {
 	targets := mapset.NewSet()
 
 	selector := fmt.Sprintf("%s:%s:%s", bp, target, "*")
 	keys, _ := redis.Strings(r.Connection.Do("KEYS", selector))
 	for _, key := range keys {
-		targets.Add(strings.Split(key, ":")[1])
+		targets.Add(strings.Split(key, ":")[2])
 	}
 
 	return targets
