@@ -4,6 +4,7 @@ import "log"
 import "os"
 import "fmt"
 import "strings"
+import "encoding/json"
 import "github.com/deckarep/golang-set"
 import "github.com/garyburd/redigo/redis"
 
@@ -67,14 +68,35 @@ func (r Redis) GetTargets(bp string) []Target {
 	return results
 }
 
-func (r Redis) GetTargetVersions(bp string, target string) mapset.Set {
-	targets := mapset.NewSet()
+
+func (r Redis) GetTargetVersions(bp string, target string) []Version {
+	versions := mapset.NewSet()
+	results := []Version{}
 
 	selector := fmt.Sprintf("%s:%s:%s", bp, target, "*")
 	keys, _ := redis.Strings(r.Connection.Do("KEYS", selector))
 	for _, key := range keys {
-		targets.Add(strings.Split(key, ":")[2])
+		versions.Add(strings.Split(key, ":")[2])
 	}
 
-	return targets
+	// Convert set results into Versions type.
+	for _, version := range versions.ToSlice() {
+		// The key to fetch from Redis.
+		key := fmt.Sprintf("%s:%s:%s", bp, target, version.(string))
+
+		// JSON Un-packing.
+		json_value, _ := redis.Bytes(r.Connection.Do("GET", key))
+		unpack := NewVersion()
+		json.Unmarshal(json_value, &unpack)
+
+		// Append the results.
+		results = append(results, unpack)
+	}
+
+	// TODO: Sort results by time.
+
+
+
+
+	return results
 }

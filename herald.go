@@ -18,24 +18,25 @@ const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archi
 var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 
 
-type VersionDocument struct {
+type Version struct {
+	Target		Target
 	Published	string	`json:"id"`
 	IsValid		bool	`json:"is_valid"`
 	IsPublished	bool	`json:"is_published"`
 }
 
-func NewVersionDocument() VersionDocument {
+func NewVersion() Version {
 
 	t := time.Now().UTC().Format(time.RFC3339)
 
-	return VersionDocument{
+	return Version{
 		Published: t,
 		IsValid: true,
 		IsPublished: false,
 	}
 }
 
-func (vd VersionDocument) JSON() []byte {
+func (vd Version) JSON() []byte {
 	b, _ := json.Marshal(vd)
 	return b
 }
@@ -122,17 +123,17 @@ func (b Buildpack) GetTargets() []Target {
 type Target struct{
 	Buildpack	Buildpack
 	Name		string
-	Versions	[]VersionDocument
+	Versions	[]Version
 }
 
-func (t Target) GetVersions() []VersionDocument {
+func (t Target) GetVersions() []Version {
 	redis := NewRedis(REDIS_URL)
 
 	version_set := redis.GetTargetVersions(t.Buildpack.Name, t.Name)
 	fmt.Println("here:")
 	fmt.Println(version_set)
 
-	return []VersionDocument{}
+	return []Version{}
 	// return targets
 
 }
