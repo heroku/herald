@@ -7,6 +7,9 @@ bin-worker: compile
 test:
 	go run cmd/test/main.go
 
+web:
+	go run cmd/web/main.go
+
 compile:
 	go install ./...
 
