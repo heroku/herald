@@ -19,6 +19,7 @@ var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 // Redis Stuff.
 var REDIS_URL = os.Getenv("REDIS_URL")
 
+// Connects to Redis instance, returns connection object.
 func RedisConnect() redis.Conn {
 	c, err := redis.DialURL(REDIS_URL)
 	if err != nil {
