@@ -49,7 +49,7 @@ func main() {
 
 				for _, result := range(results) {
 					key := fmt.Sprintf("%s:%s:%s", bp, exe, result)
-					value := "UNKNOWN"
+					value := herald.NewVersionDocument().JSON()
 
 					// Store the results in Redis.
 					_, err := redis.Connection.Do("SETNX", key, value)
@@ -57,12 +57,10 @@ func main() {
 						log.Fatal(err)
 					}
 
-
 				}
 
 				// Log results.
 				log.Printf("%s:%s results: %s", red(bp), magenta(exe), results)
-
 			}
 		}
 

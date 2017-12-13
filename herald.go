@@ -9,15 +9,37 @@ import "path/filepath"
 import "strings"
 import "os"
 import "os/exec"
-// import "connections"
+import "encoding/json"
+import "time"
 
 // Buildpack Information.
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
 var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 
-// TODO: Maybe remove.
-// type Version string
+
+
+type VersionDocument struct {
+	Published		string	`json:"id"`
+	IsValid			bool	`json:"is_valid"`
+	IsPublished		bool	`json:"is_published"`
+}
+
+func NewVersionDocument() VersionDocument {
+
+	t := time.Now().UTC().Format(time.RFC3339)
+
+	return VersionDocument{
+		Published: t,
+		IsValid: true,
+		IsPublished: false,
+	}
+}
+
+func (vd VersionDocument) JSON() []byte {
+	b, _ := json.Marshal(vd)
+	return b
+}
 
 
 // A Buildpack, which seems inherintly useful for this utility.
