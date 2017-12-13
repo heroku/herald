@@ -18,9 +18,10 @@
 
 [metadata.heroku]
   root-package = "github.com/heroku/herald"
-  go-version = "go1.8.3"
+  go-version = "go1.9.2"
   install = [ "./cmd/..."]
   ensure = "true"
+
 [[constraint]]
   name = "github.com/fatih/color"
   version = "1.5.0"
