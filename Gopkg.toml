@@ -37,3 +37,7 @@
 [[constraint]]
   name = "github.com/kataras/iris"
   version = "8.5.7"
+
+[[constraint]]
+  name = "github.com/urfave/cli"
+  version = "1.20.0"

@@ -223,6 +223,12 @@
   version = "v0.5.4"
 
 [[projects]]
+  name = "github.com/urfave/cli"
+  packages = ["."]
+  revision = "cfb38830724cc34fedffe9a2a29fb54fa9169cd1"
+  version = "v1.20.0"
+
+[[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
   packages = ["acme","acme/autocert"]
@@ -249,6 +255,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "94b0d5359191c9cf7126faf12300a6c7756117f85a5f2b3df1de985094be0441"
+  inputs-digest = "a50077023a5c3c7c599453d01c3fb97d29b11022ad00702475f88cb52d9367a7"
   solver-name = "gps-cdcl"
   solver-version = 1

@@ -4,8 +4,8 @@ worker:
 bin-worker: compile
 	../../../../bin/version-scraper
 
-test:
-	go run cmd/test/main.go
+cli:
+	go run cmd/herald-cli/main.go
 
 web:
 	go run cmd/web/main.go
