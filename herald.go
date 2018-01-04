@@ -15,15 +15,15 @@ import "time"
 // Buildpack Information.
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
-var BUILDPACKS = []string { "python", "php", "nodejs", "ruby", "jvm-common" }
 
+var BUILDPACKS = []string{"python", "php", "nodejs", "ruby", "jvm-common"}
 
 type Version struct {
-	Name		string
-	Target		Target
-	Published	string	`json:"id"`
-	IsValid		bool	`json:"is_valid"`
-	IsPublished	bool	`json:"is_published"`
+	Name        string
+	Target      Target
+	Published   string `json:"id"`
+	IsValid     bool   `json:"is_valid"`
+	IsPublished bool   `json:"is_published"`
 }
 
 func NewVersion() Version {
@@ -31,8 +31,8 @@ func NewVersion() Version {
 	t := time.Now().UTC().Format(time.RFC3339)
 
 	return Version{
-		Published: t,
-		IsValid: true,
+		Published:   t,
+		IsValid:     true,
 		IsPublished: false,
 	}
 }
@@ -51,14 +51,11 @@ func (v Version) JSON() []byte {
 	return b
 }
 
-
-
-
 // A Buildpack, which seems inherintly useful for this utility.
 type Buildpack struct {
-	Tarball	string
-	Path	string
-	Name	string
+	Tarball string
+	Path    string
+	Name    string
 }
 
 // Returns the GitHub ZipBall URI for the given buildpack.
@@ -99,11 +96,11 @@ func (b Buildpack) FindVersionScripts() []Executable {
 	results := []Executable{}
 
 	glob_results, _ := filepath.Glob(fmt.Sprintf("%s/versions/*", b.Path))
-	for _, result := range(glob_results) {
+	for _, result := range glob_results {
 
 		// Only yield a result if the glob result is a file.
 		is_directory, _ := isDirectory(result)
-		if ! is_directory {
+		if !is_directory {
 			results = append(results, NewExecutable(result))
 		}
 
@@ -119,52 +116,57 @@ func NewBuildpack(name string) Buildpack {
 	}
 }
 
-
 // Returns Targets for a given buildpack.
 func (b Buildpack) GetTargets() []Target {
 	redis := NewRedis(REDIS_URL)
 	return redis.GetTargets(b.Name)
 }
 
-
-
-
-
-type Target struct{
-	Buildpack	Buildpack
-	Name		string
-	Versions	[]Version
+type Target struct {
+	Buildpack Buildpack
+	Name      string
+	Versions  []Version
 }
 
-// Returns Versions for a given buildpack.
+// Returns Versions for a given target.
 func (t Target) GetVersions() []Version {
 	redis := NewRedis(REDIS_URL)
 	return redis.GetTargetVersions(t.Buildpack.Name, t.Name)
 }
 
+// Returns a Given Version for a given target.
+func (t Target) GetVersion(version string) Version {
+	redis := NewRedis(REDIS_URL)
+	versions := redis.GetTargetVersions(t.Buildpack.Name, t.Name)
+	new_version := Version{}
+
+	for _, v := range versions {
+		if v.Name == version {
+			new_version = v
+		}
+	}
+
+	return new_version
+}
+
 func NewTarget(bp Buildpack, name string) Target {
 
-	return Target {
+	return Target{
 		Buildpack: bp,
-		Name: name,
-		Versions: nil,
+		Name:      name,
+		Versions:  nil,
 	}
 }
 
-
-
-
-
-
 // An Executable, provided by a buildpack, for collecting version information.
-type Executable struct{
-	Path	string
+type Executable struct {
+	Path string
 }
 
 // String representation of Executable.
 func (e Executable) String() string {
 	sl := strings.Split(e.Path, "/")
-	return sl[len(sl) - 1]
+	return sl[len(sl)-1]
 }
 
 // Ensures that the given executable is… executable.
@@ -194,16 +196,12 @@ func NewExecutable(path string) Executable {
 	}
 }
 
-
-
-
-
 // Generates a list of Buildpack objects, to be used by this utility.
 func GetBuildpacks() []Buildpack {
 	// Download and unpack each Zipball from GitHub.
 
 	buildpacks := []Buildpack{}
-	for _, bp := range(BUILDPACKS) {
+	for _, bp := range BUILDPACKS {
 		buildpacks = append(buildpacks, NewBuildpack(bp))
 	}
 

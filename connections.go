@@ -11,9 +11,8 @@ import "github.com/garyburd/redigo/redis"
 // Redis Stuff.
 var REDIS_URL = os.Getenv("REDIS_URL")
 
-
 type Redis struct {
-	URL string
+	URL        string
 	Connection redis.Conn
 }
 
@@ -68,7 +67,6 @@ func (r Redis) GetTargets(bp string) []Target {
 	return results
 }
 
-
 func (r Redis) GetTargetVersions(bp string, target string) []Version {
 	versions := mapset.NewSet()
 	results := []Version{}
@@ -95,11 +93,7 @@ func (r Redis) GetTargetVersions(bp string, target string) []Version {
 		results = append(results, unpack)
 	}
 
-
 	// TODO: Sort results by time?
-
-
-
 
 	return results
 }
