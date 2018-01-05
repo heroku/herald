@@ -105,7 +105,9 @@ func main() {
 		fmt.Printf("Info: %s:%s:%s\n", bp, target.Name, targetString)
 
 		// Get Version from given version information.
-		fmt.Printf("  Valid: %t\n ", version.IsValid)
+		fmt.Printf("  Valid: %t\n", version.IsValid)
+		fmt.Printf("  Published: %t\n", version.IsPublished)
+
 		// python := herald.NewBuildpack("python")
 		return nil
 	}
