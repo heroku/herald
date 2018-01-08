@@ -54,7 +54,7 @@ func main() {
 			fmt.Printf("Buildpack '%s' targets:\n\n", bp)
 
 			// Get the buildpack from Redis.
-			buildpack := herald.NewBuildpack(bp)
+			buildpack := herald.NewBuildpack(bp, "")
 
 			// Get the targets for the given buildpack.
 			targets := buildpack.GetTargets()
@@ -70,7 +70,7 @@ func main() {
 		targetString := parsed[1]
 
 		// Get the buildpack from Redis.
-		buildpack := herald.NewBuildpack(bp)
+		buildpack := herald.NewBuildpack(bp, "")
 
 		// "python:python" was speficied.
 		if len(parsed) == 2 {
