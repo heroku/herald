@@ -2,9 +2,32 @@ package main
 
 import "github.com/heroku/herald"
 import "github.com/fatih/color"
+import "github.com/mailgun/mailgun-go"
 import "time"
 import "log"
 import "fmt"
+import "os"
+
+var MAILGUN_DOMAIN = os.Getenv("MAILGUN_DOMAIN")
+var MAILGUN_API_KEY = os.Getenv("MAILGUN_API_KEY")
+var MAILGUN_PUBLIC_KEY = os.Getenv("MAILGUN_PUBLIC_KEY")
+
+
+func send_email(to string, version string) {
+    
+    mg := mailgun.NewMailgun(MAILGUN_DOMAIN, MAILGUN_API_KEY, MAILGUN_PUBLIC_KEY)
+    message := mg.NewMessage(
+        to,
+        "Fancy subject!",
+        "Hello from Mailgun Go!",
+        "me@sandbox13d17507cb14496a9d97fe500600ac68.mailgun.org")
+        resp, id, err := mg.Send(message)
+        if err != nil {
+            log.Fatal(err)
+        }
+   fmt.Printf("ID: %s Resp: %s\n", id, resp)
+}
+
 
 func main() {
 
@@ -15,6 +38,7 @@ func main() {
 	color.NoColor = false
 
 	red := color.New(color.FgRed).SprintFunc()
+    blue := color.New(color.FgBlue).SprintFunc()
 	magenta := color.New(color.FgMagenta).SprintFunc()
 	green := color.New(color.FgGreen).SprintFunc()
 	yellow := color.New(color.FgYellow).SprintFunc()
@@ -52,7 +76,15 @@ func main() {
 					value := herald.NewVersion().JSON()
 
 					// Store the results in Redis.
-					_, err := redis.Connection.Do("SETNX", key, value)
+					result, err := redis.Connection.Do("SETNX", key, value)
+
+                    // The insert was successful (e.g. it didn't exist already)
+                    if result.(int64) != int64(0) {
+                        // TODO: Send a notification to the buildpack owner.
+                        fmt.Println("Notifying %s about %s.", blue(bp.Owner), red(key))
+//                         send_email(bp.Owner, key)
+                    }
+                    
 					if err != nil {
 						log.Fatal(err)
 					}

@@ -61,7 +61,7 @@ func (r Redis) GetTargets(bp string) []Target {
 
 	// Convert set results into Target type.
 	for _, target := range targets.ToSlice() {
-		results = append(results, NewTarget(NewBuildpack(bp), target.(string)))
+		results = append(results, NewTarget(NewBuildpack(bp, ""), target.(string)))
 	}
 
 	return results
@@ -87,7 +87,7 @@ func (r Redis) GetTargetVersions(bp string, target string) []Version {
 		unpack := NewVersion()
 		json.Unmarshal(json_value, &unpack)
 		unpack.Name = key
-		unpack.Target = NewTarget(NewBuildpack(bp), target)
+		unpack.Target = NewTarget(NewBuildpack(bp, ""), target)
 
 		// Append the results.
 		results = append(results, unpack)

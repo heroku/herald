@@ -16,7 +16,19 @@ import "time"
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
 
-var BUILDPACKS = []string{"python", "php", "nodejs", "ruby", "jvm-common"}
+// A buildpack that is owned by an owner (for notifications). 
+type OwnedBuildpack struct {
+    Name    string
+    Owner   string
+}
+
+var BUILDPACKS = []OwnedBuildpack{
+    {Name: "python", Owner: "kreitz@salesforce.com"}, 
+    {Name: "php", Owner: "kreitz@salesforce.com"},
+    {Name: "nodejs", Owner: "kreitz@salesforce.com"},
+    {Name: "ruby", Owner: "kreitz@salesforce.com"},
+    {Name: "jvm-common", Owner: "kreitz@salesforce.com"},
+}
 
 type Version struct {
 	Name        string
@@ -56,6 +68,7 @@ type Buildpack struct {
 	Tarball string
 	Path    string
 	Name    string
+    Owner   string
 }
 
 // Returns the GitHub ZipBall URI for the given buildpack.
@@ -110,9 +123,10 @@ func (b Buildpack) FindVersionScripts() []Executable {
 }
 
 // Creates a new Buildpack type.
-func NewBuildpack(name string) Buildpack {
+func NewBuildpack(name string, owner string) Buildpack {
 	return Buildpack{
 		Name: name,
+        Owner: owner,
 	}
 }
 
@@ -202,7 +216,7 @@ func GetBuildpacks() []Buildpack {
 
 	buildpacks := []Buildpack{}
 	for _, bp := range BUILDPACKS {
-		buildpacks = append(buildpacks, NewBuildpack(bp))
+		buildpacks = append(buildpacks, NewBuildpack(bp.Name, bp.Owner))
 	}
 
 	return buildpacks

@@ -15,14 +15,45 @@
 
 [[projects]]
   name = "github.com/aws/aws-sdk-go"
-  packages = ["aws","aws/awserr","aws/awsutil","aws/client","aws/client/metadata","aws/corehandlers","aws/credentials","aws/credentials/ec2rolecreds","aws/credentials/endpointcreds","aws/credentials/stscreds","aws/defaults","aws/ec2metadata","aws/endpoints","aws/request","aws/session","aws/signer/v4","internal/shareddefaults","private/protocol","private/protocol/query","private/protocol/query/queryutil","private/protocol/rest","private/protocol/restxml","private/protocol/xml/xmlutil","service/s3","service/sts"]
+  packages = [
+    "aws",
+    "aws/awserr",
+    "aws/awsutil",
+    "aws/client",
+    "aws/client/metadata",
+    "aws/corehandlers",
+    "aws/credentials",
+    "aws/credentials/ec2rolecreds",
+    "aws/credentials/endpointcreds",
+    "aws/credentials/stscreds",
+    "aws/defaults",
+    "aws/ec2metadata",
+    "aws/endpoints",
+    "aws/request",
+    "aws/session",
+    "aws/signer/v4",
+    "internal/shareddefaults",
+    "private/protocol",
+    "private/protocol/query",
+    "private/protocol/query/queryutil",
+    "private/protocol/rest",
+    "private/protocol/restxml",
+    "private/protocol/xml/xmlutil",
+    "service/s3",
+    "service/sts"
+  ]
   revision = "cd721c97ef6fcfcb76b4feb14fcfead57fb01e5e"
   version = "v1.12.33"
 
 [[projects]]
   branch = "master"
   name = "github.com/aymerick/raymond"
-  packages = [".","ast","lexer","parser"]
+  packages = [
+    ".",
+    "ast",
+    "lexer",
+    "parser"
+  ]
   revision = "72acac2207479d21dd45898c2a4264246c818148"
 
 [[projects]]
@@ -40,7 +71,10 @@
 [[projects]]
   branch = "master"
   name = "github.com/eknkc/amber"
-  packages = [".","parser"]
+  packages = [
+    ".",
+    "parser"
+  ]
   revision = "cdade1c073850f4ffc70a829e31235ea6892853b"
 
 [[projects]]
@@ -63,7 +97,10 @@
 
 [[projects]]
   name = "github.com/garyburd/redigo"
-  packages = ["internal","redis"]
+  packages = [
+    "internal",
+    "redis"
+  ]
   revision = "47dc60e71eed504e3ef8e77ee3c6fe720f3be57f"
   version = "v1.3.0"
 
@@ -82,7 +119,10 @@
 [[projects]]
   branch = "master"
   name = "github.com/hashicorp/go-getter"
-  packages = [".","helper/url"]
+  packages = [
+    ".",
+    "helper/url"
+  ]
   revision = "2f449c791e6af9e532bc1aca36d1d3865b8537f9"
 
 [[projects]]
@@ -122,25 +162,71 @@
 
 [[projects]]
   name = "github.com/kataras/iris"
-  packages = [".","cache","cache/cfg","cache/client","cache/client/rule","cache/entry","cache/ruleset","cache/uri","context","core/errors","core/handlerconv","core/host","core/maintenance","core/maintenance/client","core/maintenance/encoding","core/maintenance/version","core/memstore","core/netutil","core/router","core/router/macro","core/router/macro/interpreter/ast","core/router/macro/interpreter/lexer","core/router/macro/interpreter/parser","core/router/macro/interpreter/token","core/router/node","middleware/logger","middleware/recover","mvc","mvc/activator","mvc/activator/field","mvc/activator/methodfunc","mvc/activator/model","mvc/activator/persistence","sessions","view"]
+  packages = [
+    ".",
+    "cache",
+    "cache/cfg",
+    "cache/client",
+    "cache/client/rule",
+    "cache/entry",
+    "cache/ruleset",
+    "cache/uri",
+    "context",
+    "core/errors",
+    "core/handlerconv",
+    "core/host",
+    "core/maintenance",
+    "core/maintenance/client",
+    "core/maintenance/encoding",
+    "core/maintenance/version",
+    "core/memstore",
+    "core/netutil",
+    "core/router",
+    "core/router/macro",
+    "core/router/macro/interpreter/ast",
+    "core/router/macro/interpreter/lexer",
+    "core/router/macro/interpreter/parser",
+    "core/router/macro/interpreter/token",
+    "core/router/node",
+    "middleware/logger",
+    "middleware/recover",
+    "mvc",
+    "mvc/activator",
+    "mvc/activator/field",
+    "mvc/activator/methodfunc",
+    "mvc/activator/model",
+    "mvc/activator/persistence",
+    "sessions",
+    "view"
+  ]
   revision = "aab34a3e9d37f8b9fed4124f755a1b89a6f88c8a"
   version = "v8.5.7"
 
 [[projects]]
   branch = "master"
   name = "github.com/kataras/pio"
-  packages = [".","terminal"]
+  packages = [
+    ".",
+    "terminal"
+  ]
   revision = "825e39f34365e7db2c9fbc3692c16220e3bd7418"
 
 [[projects]]
   branch = "master"
   name = "github.com/kataras/survey"
-  packages = [".","core","terminal"]
+  packages = [
+    ".",
+    "core",
+    "terminal"
+  ]
   revision = "00934ae069eda15df26fa427ac393e67e239380c"
 
 [[projects]]
   name = "github.com/klauspost/compress"
-  packages = ["flate","gzip"]
+  packages = [
+    "flate",
+    "gzip"
+  ]
   revision = "6c8db69c4b49dd4df1fff66996cf556176d0b9bf"
   version = "v1.2.1"
 
@@ -155,6 +241,12 @@
   packages = ["."]
   revision = "cb6bfca970f6908083f26f39a79009d608efd5cd"
   version = "v1.1"
+
+[[projects]]
+  name = "github.com/mailgun/mailgun-go"
+  packages = ["."]
+  revision = "a4002e2df2e8ca2da6a6fbb4a72871b504e49f50"
+  version = "v1.1.0"
 
 [[projects]]
   name = "github.com/mattn/go-colorable"
@@ -193,6 +285,12 @@
   revision = "a61a99592b77c9ba629d254a693acffaeb4b7e28"
 
 [[projects]]
+  name = "github.com/pkg/errors"
+  packages = ["."]
+  revision = "645ef00459ed84a119197bfb8d8205042c6df63d"
+  version = "v0.8.0"
+
+[[projects]]
   name = "github.com/russross/blackfriday"
   packages = ["."]
   revision = "cadec560ec52d93835bf2f15bd794700d3a2473b"
@@ -218,7 +316,12 @@
 
 [[projects]]
   name = "github.com/ulikunitz/xz"
-  packages = [".","internal/hash","internal/xlog","lzma"]
+  packages = [
+    ".",
+    "internal/hash",
+    "internal/xlog",
+    "lzma"
+  ]
   revision = "0c6b41e72360850ca4f98dc341fd999726ea007f"
   version = "v0.5.4"
 
@@ -231,13 +334,19 @@
 [[projects]]
   branch = "master"
   name = "golang.org/x/crypto"
-  packages = ["acme","acme/autocert"]
+  packages = [
+    "acme",
+    "acme/autocert"
+  ]
   revision = "94eea52f7b742c7cbe0b03b22f0c4c8631ece122"
 
 [[projects]]
   branch = "master"
   name = "golang.org/x/net"
-  packages = ["html","html/atom"]
+  packages = [
+    "html",
+    "html/atom"
+  ]
   revision = "d866cfc389cec985d6fda2859936a575a55a3ab6"
 
 [[projects]]
@@ -255,6 +364,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "a50077023a5c3c7c599453d01c3fb97d29b11022ad00702475f88cb52d9367a7"
+  inputs-digest = "ea9d12095a0e7a4103539dbaa573e922f1de9455467192dab983c24586b3524c"
   solver-name = "gps-cdcl"
   solver-version = 1
