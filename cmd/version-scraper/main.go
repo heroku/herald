@@ -1,31 +1,49 @@
 package main
 
-import "github.com/heroku/herald"
-import "github.com/fatih/color"
-import "github.com/mailgun/mailgun-go"
-import "time"
-import "log"
-import "fmt"
-import "os"
+import (
+	"github.com/heroku/herald";
+	"github.com/fatih/color";
+	"github.com/google/go-github/github";
+	"golang.org/x/oauth2"
+)
+import (
+	"time";
+	"log";
+	"fmt";
+	"os";
+	"context"
+)
 
-var MAILGUN_DOMAIN = os.Getenv("MAILGUN_DOMAIN")
-var MAILGUN_API_KEY = os.Getenv("MAILGUN_API_KEY")
-var MAILGUN_PUBLIC_KEY = os.Getenv("MAILGUN_PUBLIC_KEY")
+func open_issue(bp herald.Buildpack, target string) {
+	ctx := context.Background()
+	ts := oauth2.StaticTokenSource(
+		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+	)
+	tc := oauth2.NewClient(ctx, ts)
 
+	client := github.NewClient(tc)
 
-func send_email(to string, version string) {
-    
-    mg := mailgun.NewMailgun(MAILGUN_DOMAIN, MAILGUN_API_KEY, MAILGUN_PUBLIC_KEY)
-    message := mg.NewMessage(
-        to,
-        "Fancy subject!",
-        "Hello from Mailgun Go!",
-        "me@sandbox13d17507cb14496a9d97fe500600ac68.mailgun.org")
-        resp, id, err := mg.Send(message)
-        if err != nil {
-            log.Fatal(err)
-        }
-   fmt.Printf("ID: %s Resp: %s\n", id, resp)
+	title := fmt.Sprintf("New release (%s) available! (Herald System)", target)
+	body := fmt.Sprintf("This issue created programmatically and automatically by Heroku, on behalf of %s, the owner of the %s buildpack.", bp.Owner, bp.Name)
+	
+	newIssue := github.IssueRequest{
+		Title: &title,
+		Body: &body,
+// 		Labels: ["New Build Target"],
+		Assignee: &bp.Owner,
+	}
+	// list all repositories for the authenticated user
+	bp_name := fmt.Sprintf("heroku-buildpack-%s", bp.Name)
+	fmt.Println(bp_name)
+	
+	issue, _, err := client.Issues.Create(ctx, "heroku", bp_name, &newIssue)
+	if err != nil {
+		// do something
+	}
+// 	_ = issue
+	fmt.Println(issue)
+
+	fmt.Println(fmt.Sprintf("New issue created on %s buildpack on GitHub.", bp.Name))
 }
 
 
@@ -78,11 +96,13 @@ func main() {
 					// Store the results in Redis.
 					result, err := redis.Connection.Do("SETNX", key, value)
 
-                    // The insert was successful (e.g. it didn't exist already)
-                    if result.(int64) != int64(0) {
-                        // TODO: Send a notification to the buildpack owner.
-                        fmt.Println("Notifying %s about %s.", blue(bp.Owner), red(key))
-//                         send_email(bp.Owner, key)
+					// The insert was successful (e.g. it didn't exist already)
+					if result.(int64) != int64(0) {
+						// TODO: Send a notification to the buildpack owner.
+						fmt.Println("Notifying", blue(bp.Owner), "about", red(key), ".")
+
+						// Open an issue on GitHub (work in progress).
+						open_issue(bp, key)
                     }
                     
 					if err != nil {

@@ -23,7 +23,7 @@ type OwnedBuildpack struct {
 }
 
 var BUILDPACKS = []OwnedBuildpack{
-    {Name: "python", Owner: "kreitz@salesforce.com"}, 
+    {Name: "python", Owner: "kennethreitz"}, 
     {Name: "php", Owner: "kreitz@salesforce.com"},
     {Name: "nodejs", Owner: "kreitz@salesforce.com"},
     {Name: "ruby", Owner: "kreitz@salesforce.com"},
