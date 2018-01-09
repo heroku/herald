@@ -14,10 +14,19 @@ import (
 	"context"
 )
 
+// Personal GitHub token. TODO: Create a bit account.
+var GITHUB_TOKEN = os.Getenv("GITHUB_TOKEN")
+
+
+// Opens an issue on GitHub for the given buildpack and new target.
+// 
+// Note: Uses the GITHUB_TOKEN environment variable, which is currently
+//   Set to Kenneth's personal GitHub account. Need to create a bot account
+//   for this service. 
 func open_issue(bp herald.Buildpack, target string) {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: os.Getenv("GITHUB_TOKEN")},
+		&oauth2.Token{AccessToken: GITHUB_TOKEN},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 
