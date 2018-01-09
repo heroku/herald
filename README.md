@@ -1,4 +1,4 @@
-# Herald — Yielding Messages (for Languages) from Upon High
+# Herald — Yielding Messages (for Languages) from Upon High
 
 **This repo is a work in progress.**
 
@@ -9,8 +9,7 @@ The notification system is comprised of a few different layers:
 
 1. Scraping various "sources of truth" over the internet for release information (provided via buildpacks as standard Linux executables)
 2. Presenting this information to the Language Owners
-3. Notifying them, via email, when a new release has been made.
-4. Tracking the status of (Unpublished, Published, Invalid)
+3. Notifying them, via GitHub Issues, when a new release has been made.
 
 All languages, except Node.js, should benefit greatly from this system.
 
