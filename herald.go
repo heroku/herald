@@ -9,8 +9,6 @@ import "path/filepath"
 import "strings"
 import "os"
 import "os/exec"
-import "encoding/json"
-import "time"
 
 // Buildpack Information.
 const BP_BRANCH = "versions"
@@ -33,34 +31,10 @@ var BUILDPACKS = []OwnedBuildpack{
 type Version struct {
 	Name        string
 	Target      Target
-	Published   string `json:"id"`
-	IsValid     bool   `json:"is_valid"`
-	IsPublished bool   `json:"is_published"`
 }
 
 func NewVersion() Version {
-
-	t := time.Now().UTC().Format(time.RFC3339)
-
-	return Version{
-		Published:   t,
-		IsValid:     true,
-		IsPublished: false,
-	}
-}
-
-func (v Version) String() string {
-	return fmt.Sprintf(
-		"<Version name='%s' published=%#v, valid=%#v>",
-		v.Name,
-		v.IsPublished,
-		v.IsValid,
-	)
-}
-
-func (v Version) JSON() []byte {
-	b, _ := json.Marshal(v)
-	return b
+	return Version{}
 }
 
 // A Buildpack, which seems inherintly useful for this utility.
@@ -130,38 +104,12 @@ func NewBuildpack(name string, owner string) Buildpack {
 	}
 }
 
-// Returns Targets for a given buildpack.
-func (b Buildpack) GetTargets() []Target {
-	redis := NewRedis(REDIS_URL)
-	return redis.GetTargets(b.Name)
-}
-
 type Target struct {
 	Buildpack Buildpack
 	Name      string
 	Versions  []Version
 }
 
-// Returns Versions for a given target.
-func (t Target) GetVersions() []Version {
-	redis := NewRedis(REDIS_URL)
-	return redis.GetTargetVersions(t.Buildpack.Name, t.Name)
-}
-
-// Returns a Given Version for a given target.
-func (t Target) GetVersion(version string) Version {
-	redis := NewRedis(REDIS_URL)
-	versions := redis.GetTargetVersions(t.Buildpack.Name, t.Name)
-	new_version := Version{}
-
-	for _, v := range versions {
-		if v.Name == version {
-			new_version = v
-		}
-	}
-
-	return new_version
-}
 
 func NewTarget(bp Buildpack, name string) Target {
 
