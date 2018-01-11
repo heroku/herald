@@ -1,28 +1,25 @@
 package main
 
 import (
-	"github.com/heroku/herald";
-	"github.com/fatih/color";
-	"github.com/google/go-github/github";
-	"golang.org/x/oauth2"
-)
-import (
-	"time";
-	"log";
-	"fmt";
-	"os";
 	"context"
+	"fmt"
+	"github.com/fatih/color"
+	"github.com/google/go-github/github"
+	"github.com/heroku/herald"
+	"golang.org/x/oauth2"
+	"log"
+	"os"
+	"time"
 )
 
 // Personal GitHub token. TODO: Create a bit account.
 var GITHUB_TOKEN = os.Getenv("GITHUB_TOKEN")
 
-
 // Opens an issue on GitHub for the given buildpack and new target.
-// 
+//
 // Note: Uses the GITHUB_TOKEN environment variable, which is currently
 //   Set to Kenneth's personal GitHub account. Need to create a bot account
-//   for this service. 
+//   for this service.
 func open_issue(bp herald.Buildpack, target string) bool {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
@@ -34,16 +31,16 @@ func open_issue(bp herald.Buildpack, target string) bool {
 
 	title := fmt.Sprintf("New release (%s) available! (Herald System)", target)
 	body := fmt.Sprintf("This issue created programmatically and automatically by Heroku, on behalf of %s, the owner of the %s buildpack.", bp.Owner, bp.Name)
-	
+
 	newIssue := github.IssueRequest{
 		Title: &title,
-		Body: &body,
-// 		Labels: ["New Build Target"],
+		Body:  &body,
+		// 		Labels: ["New Build Target"],
 		Assignee: &bp.Owner,
 	}
 	// list all repositories for the authenticated user
 	bp_name := fmt.Sprintf("heroku-buildpack-%s", bp.Name)
-	
+
 	issue, _, err := client.Issues.Create(ctx, "heroku", bp_name, &newIssue)
 	if err != nil {
 		fmt.Println("An error occurred creating the GitHub issue. Will try again")
@@ -54,7 +51,6 @@ func open_issue(bp herald.Buildpack, target string) bool {
 	return (issue != nil)
 }
 
-
 func main() {
 
 	// Redis stuff.
@@ -64,7 +60,7 @@ func main() {
 	color.NoColor = false
 
 	red := color.New(color.FgRed).SprintFunc()
-    blue := color.New(color.FgBlue).SprintFunc()
+	blue := color.New(color.FgBlue).SprintFunc()
 	magenta := color.New(color.FgMagenta).SprintFunc()
 	green := color.New(color.FgGreen).SprintFunc()
 	yellow := color.New(color.FgYellow).SprintFunc()
@@ -76,7 +72,7 @@ func main() {
 		buildpacks := herald.GetBuildpacks()
 
 		// Iterate over them.
-		for _, bp := range(buildpacks) {
+		for _, bp := range buildpacks {
 
 			// Download and extract each Buildpack.
 			log.Printf(bold("Downloading '%s'…"), red(bp.Name))
@@ -87,7 +83,7 @@ func main() {
 			// Find all version executables for the given buildpack.
 			executables := bp.FindVersionScripts()
 
-			for _, exe := range(executables) {
+			for _, exe := range executables {
 
 				log.Printf(yellow("Executing '%s:%s' script…"), red(bp), magenta(exe))
 
@@ -97,7 +93,7 @@ func main() {
 				// Execute the executable, print the results.
 				results := exe.Execute()
 
-				for _, result := range(results) {
+				for _, result := range results {
 					key := fmt.Sprintf("%s:%s:%s", bp, exe, result)
 					value := 1
 
@@ -111,13 +107,13 @@ func main() {
 
 						// Open an issue on GitHub (work in progress).
 						success := open_issue(bp, key)
-						if ! success {
+						if !success {
 							// If writing out the issue was unsuccessful, delete the key from Redis.
 							_, err := redis.Connection.Do("DEL", key)
 							_ = err
 						}
-                    }
-                    
+					}
+
 					if err != nil {
 						log.Fatal(err)
 					}
@@ -132,8 +128,8 @@ func main() {
 		log.Print(bold("Sleeping for 10 minutes…"))
 
 		// Sleep for ten minutes.
-		time.Sleep(10*time.Minute)
+		time.Sleep(10 * time.Minute)
 
-		}
+	}
 
 }
