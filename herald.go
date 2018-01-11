@@ -11,17 +11,20 @@ import (
 	"strings"
 )
 
-// Buildpack Information.
-const BP_BRANCH = "versions"
-const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
+// BPBranch is which branch of the buildpack to use.
+const BPBranch = "versions"
 
-// A buildpack that is owned by an owner (for notifications).
+// BPTarballTemplate is the template for constructing the zipball URL.
+const BPTarballTemplate = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
+
+// OwnedBuildpack is a buildpack that is owned by an owner (for notifications).
 type OwnedBuildpack struct {
 	Name  string
 	Owner string
 }
 
-var BUILDPACKS = []OwnedBuildpack{
+// Buildpacks is a list of a buildpacks with their respective owners.
+var Buildpacks = []OwnedBuildpack{
 	{Name: "python", Owner: "kennethreitz"},
 	{Name: "php", Owner: "kreitz@salesforce.com"},
 	{Name: "nodejs", Owner: "kreitz@salesforce.com"},
@@ -29,16 +32,18 @@ var BUILDPACKS = []OwnedBuildpack{
 	{Name: "jvm-common", Owner: "kreitz@salesforce.com"},
 }
 
+// Version is a type used to represent a given version of a Target.
 type Version struct {
 	Name   string
 	Target Target
 }
 
+// NewVersion returns a new Version instance.
 func NewVersion() Version {
 	return Version{}
 }
 
-// A Buildpack, which seems inherintly useful for this utility.
+// Buildpack is a type which seems inherintly useful for this utility.
 type Buildpack struct {
 	Tarball string
 	Path    string
@@ -46,12 +51,12 @@ type Buildpack struct {
 	Owner   string
 }
 
-// Returns the GitHub ZipBall URI for the given buildpack.
+// ZipballURI Returns the GitHub ZipBall URI for the given buildpack.
 func (b Buildpack) ZipballURI() string {
-	return fmt.Sprintf(BP_TARBALL_TEMPLATE, b.Name, BP_BRANCH)
+	return fmt.Sprintf(BPTarballTemplate, b.Name, BPBranch)
 }
 
-// Downloads the given buildpack to a temporary directory.
+// Download Downloads the given buildpack to a temporary directory.
 // Returns a new Buildpack object, as well as the target.
 func (b *Buildpack) Download() string {
 	target, _ := ioutil.TempDir("", "buildpacks")
@@ -61,7 +66,7 @@ func (b *Buildpack) Download() string {
 	// The branch to base this off of.
 
 	// Set the Path.
-	b.Path = target + fmt.Sprintf("/heroku-buildpack-%s-%s", b.Name, BP_BRANCH)
+	b.Path = target + fmt.Sprintf("/heroku-buildpack-%s-%s", b.Name, BPBranch)
 
 	return b.Path
 
@@ -78,17 +83,17 @@ func isDirectory(path string) (bool, error) {
 	return fileInfo.IsDir(), err
 }
 
-// Finds executables from a given buildpack, with globbing.
+// FindVersionScripts Finds executables from a given buildpack, with globbing.
 // Rerturns a slice of the Executable type.
 func (b Buildpack) FindVersionScripts() []Executable {
 	results := []Executable{}
 
-	glob_results, _ := filepath.Glob(fmt.Sprintf("%s/versions/*", b.Path))
-	for _, result := range glob_results {
+	globResults, _ := filepath.Glob(fmt.Sprintf("%s/versions/*", b.Path))
+	for _, result := range globResults {
 
 		// Only yield a result if the glob result is a file.
-		is_directory, _ := isDirectory(result)
-		if !is_directory {
+		isDirectory, _ := isDirectory(result)
+		if !isDirectory {
 			results = append(results, NewExecutable(result))
 		}
 
@@ -97,7 +102,7 @@ func (b Buildpack) FindVersionScripts() []Executable {
 	return results
 }
 
-// Creates a new Buildpack type.
+// NewBuildpack Creates a new Buildpack type.
 func NewBuildpack(name string, owner string) Buildpack {
 	return Buildpack{
 		Name:  name,
@@ -105,12 +110,14 @@ func NewBuildpack(name string, owner string) Buildpack {
 	}
 }
 
+// Target represents a target (e.g. buildable asset) owned by a Buildpack.
 type Target struct {
 	Buildpack Buildpack
 	Name      string
 	Versions  []Version
 }
 
+// NewTarget returns a new Target instance.
 func NewTarget(bp Buildpack, name string) Target {
 
 	return Target{
@@ -120,7 +127,7 @@ func NewTarget(bp Buildpack, name string) Target {
 	}
 }
 
-// An Executable, provided by a buildpack, for collecting version information.
+// Executable provided by a buildpack, for collecting version information.
 type Executable struct {
 	Path string
 }
@@ -131,7 +138,7 @@ func (e Executable) String() string {
 	return sl[len(sl)-1]
 }
 
-// Ensures that the given executable is… executable.
+// EnsureExecutable Ensures that the given executable is… executable.
 func (e Executable) EnsureExecutable() {
 	// TODO: Chmod to the proper permissions.
 	if err := os.Chmod(e.Path, 0777); err != nil {
@@ -140,7 +147,7 @@ func (e Executable) EnsureExecutable() {
 	}
 }
 
-// Executes the given executable, and returns results.
+// Execute Executes the given executable, and returns results.
 func (e Executable) Execute() []string {
 	out, err := exec.Command(e.Path).Output()
 	if err != nil {
@@ -151,19 +158,19 @@ func (e Executable) Execute() []string {
 
 }
 
-// Creates a new Executable type.
+// NewExecutable Creates a new Executable type.
 func NewExecutable(path string) Executable {
 	return Executable{
 		Path: path,
 	}
 }
 
-// Generates a list of Buildpack objects, to be used by this utility.
+// GetBuildpacks Generates a list of Buildpack objects, to be used by this utility.
 func GetBuildpacks() []Buildpack {
 	// Download and unpack each Zipball from GitHub.
 
 	buildpacks := []Buildpack{}
-	for _, bp := range BUILDPACKS {
+	for _, bp := range Buildpacks {
 		buildpacks = append(buildpacks, NewBuildpack(bp.Name, bp.Owner))
 	}
 
