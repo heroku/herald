@@ -1,36 +1,37 @@
 package herald
 
-// import "os"
-import "fmt"
-import "github.com/hashicorp/go-getter"
-import "io/ioutil"
-import "log"
-import "path/filepath"
-import "strings"
-import "os"
-import "os/exec"
+import (
+	"fmt"
+	"github.com/hashicorp/go-getter"
+	"io/ioutil"
+	"log"
+	"os"
+	"os/exec"
+	"path/filepath"
+	"strings"
+)
 
 // Buildpack Information.
 const BP_BRANCH = "versions"
 const BP_TARBALL_TEMPLATE = "https://github.com/heroku/heroku-buildpack-%s/archive/%s.zip"
 
-// A buildpack that is owned by an owner (for notifications). 
+// A buildpack that is owned by an owner (for notifications).
 type OwnedBuildpack struct {
-    Name    string
-    Owner   string
+	Name  string
+	Owner string
 }
 
 var BUILDPACKS = []OwnedBuildpack{
-    {Name: "python", Owner: "kennethreitz"}, 
-    {Name: "php", Owner: "kreitz@salesforce.com"},
-    {Name: "nodejs", Owner: "kreitz@salesforce.com"},
-    {Name: "ruby", Owner: "kreitz@salesforce.com"},
-    {Name: "jvm-common", Owner: "kreitz@salesforce.com"},
+	{Name: "python", Owner: "kennethreitz"},
+	{Name: "php", Owner: "kreitz@salesforce.com"},
+	{Name: "nodejs", Owner: "kreitz@salesforce.com"},
+	{Name: "ruby", Owner: "kreitz@salesforce.com"},
+	{Name: "jvm-common", Owner: "kreitz@salesforce.com"},
 }
 
 type Version struct {
-	Name        string
-	Target      Target
+	Name   string
+	Target Target
 }
 
 func NewVersion() Version {
@@ -42,7 +43,7 @@ type Buildpack struct {
 	Tarball string
 	Path    string
 	Name    string
-    Owner   string
+	Owner   string
 }
 
 // Returns the GitHub ZipBall URI for the given buildpack.
@@ -99,8 +100,8 @@ func (b Buildpack) FindVersionScripts() []Executable {
 // Creates a new Buildpack type.
 func NewBuildpack(name string, owner string) Buildpack {
 	return Buildpack{
-		Name: name,
-        Owner: owner,
+		Name:  name,
+		Owner: owner,
 	}
 }
 
@@ -109,7 +110,6 @@ type Target struct {
 	Name      string
 	Versions  []Version
 }
-
 
 func NewTarget(bp Buildpack, name string) Target {
 
