@@ -12,18 +12,18 @@ import (
 	"time"
 )
 
-// Personal GitHub token. TODO: Create a bit account.
-var GITHUB_TOKEN = os.Getenv("GITHUB_TOKEN")
+// GithubToken is Personal GitHub token. TODO: Create a bot account.
+var GithubToken = os.Getenv("GITHUB_TOKEN")
 
 // Opens an issue on GitHub for the given buildpack and new target.
 //
 // Note: Uses the GITHUB_TOKEN environment variable, which is currently
 //   Set to Kenneth's personal GitHub account. Need to create a bot account
 //   for this service.
-func open_issue(bp herald.Buildpack, target string) bool {
+func openIssue(bp herald.Buildpack, target string) bool {
 	ctx := context.Background()
 	ts := oauth2.StaticTokenSource(
-		&oauth2.Token{AccessToken: GITHUB_TOKEN},
+		&oauth2.Token{AccessToken: GithubToken},
 	)
 	tc := oauth2.NewClient(ctx, ts)
 
@@ -39,9 +39,9 @@ func open_issue(bp herald.Buildpack, target string) bool {
 		Assignee: &bp.Owner,
 	}
 	// list all repositories for the authenticated user
-	bp_name := fmt.Sprintf("heroku-buildpack-%s", bp.Name)
+	bpName := fmt.Sprintf("heroku-buildpack-%s", bp.Name)
 
-	issue, _, err := client.Issues.Create(ctx, "heroku", bp_name, &newIssue)
+	issue, _, err := client.Issues.Create(ctx, "heroku", bpName, &newIssue)
 	if err != nil {
 		fmt.Println("An error occurred creating the GitHub issue. Will try again")
 	} else {
@@ -106,7 +106,7 @@ func main() {
 						fmt.Println("Notifying", blue(bp.Owner), "about", red(key), ".")
 
 						// Open an issue on GitHub (work in progress).
-						success := open_issue(bp, key)
+						success := openIssue(bp, key)
 						if !success {
 							// If writing out the issue was unsuccessful, delete the key from Redis.
 							_, err := redis.Connection.Do("DEL", key)
