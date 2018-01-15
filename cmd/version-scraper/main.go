@@ -7,6 +7,7 @@ import (
 	"github.com/google/go-github/github"
 	"github.com/heroku/herald"
 	"golang.org/x/oauth2"
+	"github.com/garyburd/redigo/redis"
 	"log"
 	"os"
 	"time"
@@ -54,7 +55,7 @@ func openIssue(bp herald.Buildpack, target string) bool {
 func main() {
 
 	// Redis stuff.
-	redis := herald.NewRedis("")
+	Redis := herald.NewRedis("")
 
 	// Color Stuff.
 	color.NoColor = false
@@ -86,8 +87,13 @@ func main() {
 			for _, exe := range executables {
 
 				log.Printf(yellow("Executing '%s:%s' script…"), red(bp), magenta(exe))
-
-				// TODO: Ensure chmod for the executable.
+				
+				targetQuery, _ := redis.Strings(Redis.Connection.Do(fmt.Sprintf("KEYS %s:%s:*", bp, exe)))
+				
+				targetCount := len(targetQuery)
+ 				newTarget := (targetCount == 0)
+                
+				// Ensure chmod for the executable.
 				exe.EnsureExecutable()
 
 				// Execute the executable, print the results.
@@ -98,20 +104,25 @@ func main() {
 					value := 1
 
 					// Store the results in Redis.
-					result, err := redis.Connection.Do("SETNX", key, value)
+					result, err := Redis.Connection.Do("SETNX", key, value)
 
 					// The insert was successful (e.g. it didn't exist already)
 					if result.(int64) != int64(0) {
 						// TODO: Send a notification to the buildpack owner.
-						fmt.Println("Notifying", blue(bp.Owner), "about", red(key), ".")
 
 						// Open an issue on GitHub (work in progress).
-						success := openIssue(bp, key)
-						if !success {
-							// If writing out the issue was unsuccessful, delete the key from Redis.
-							_, err := redis.Connection.Do("DEL", key)
-							_ = err
+						if !newTarget {
+							fmt.Println("Notifying", blue(bp.Owner), "about", red(key), ".")
+							success := openIssue(bp, key)
+							if !success {
+								// If writing out the issue was unsuccessful, delete the key from Redis.
+								_, err := Redis.Connection.Do("DEL", key)
+								_ = err
+							}
+						} else {
+							fmt.Println("New target, skipping GitHub notifications.")
 						}
+						
 					}
 
 					if err != nil {
