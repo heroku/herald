@@ -17,6 +17,11 @@ This system is written in the Go programming language.
 
 - [heroku-herald GitHub profile](https://github.com/heroku-herald)
 
+## Buildpack API
+
+- Each builpack contains a `versions` directory, containing executables that print out, one per line, available version numbers.
+- Each executable provided is a "target" that the buildpack needs to track versions of.
+
 ☤
 
 Boostrapping Locally
