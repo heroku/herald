@@ -36,7 +36,7 @@ func openIssue(bp herald.Buildpack, target string) bool {
 	newIssue := github.IssueRequest{
 		Title: &title,
 		Body:  &body,
-		// 		Labels: ["New Build Target"],
+		// Labels: ["New Build Target"],
 		Assignee: &bp.Owner,
 	}
 	// list all repositories for the authenticated user
