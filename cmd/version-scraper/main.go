@@ -88,8 +88,7 @@ func main() {
 
 				log.Printf(yellow("Executing '%s:%s' script…"), red(bp), magenta(exe))
 
-				targetQuery, _ := redis.Strings(Redis.Connection.Do(fmt.Sprintf("KEYS %s:%s:*", bp, exe)))
-
+				targetQuery, _ := redis.Strings(Redis.Connection.Do("KEYS", fmt.Sprintf("%s:%s:*", bp, exe)))
 				targetCount := len(targetQuery)
 				newTarget := (targetCount == 0)
 
