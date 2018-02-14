@@ -4,10 +4,10 @@ import (
 	"context"
 	"fmt"
 	"github.com/fatih/color"
+	"github.com/garyburd/redigo/redis"
 	"github.com/google/go-github/github"
 	"github.com/heroku/herald"
 	"golang.org/x/oauth2"
-	"github.com/garyburd/redigo/redis"
 	"log"
 	"os"
 	"time"
@@ -87,12 +87,12 @@ func main() {
 			for _, exe := range executables {
 
 				log.Printf(yellow("Executing '%s:%s' script…"), red(bp), magenta(exe))
-				
+
 				targetQuery, _ := redis.Strings(Redis.Connection.Do(fmt.Sprintf("KEYS %s:%s:*", bp, exe)))
-				
+
 				targetCount := len(targetQuery)
- 				newTarget := (targetCount == 0)
-                
+				newTarget := (targetCount == 0)
+
 				// Ensure chmod for the executable.
 				exe.EnsureExecutable()
 
@@ -122,7 +122,7 @@ func main() {
 						} else {
 							fmt.Println("New target, skipping GitHub notifications.")
 						}
-						
+
 					}
 
 					if err != nil {
