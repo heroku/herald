@@ -11,7 +11,11 @@ The notification system is comprised of a few different layers:
 
 All languages, except Node.js, should benefit greatly from this system.
 
-This system will be written in the Go programming language.
+This system is written in the Go programming language.
+
+## Relevant Links
+
+- [heroku-herald GitHub profile](https://github.com/heroku-herald)
 
 ☤
 
