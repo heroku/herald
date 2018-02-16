@@ -114,42 +114,40 @@ func main() {
 					rollbar.Error(rollbar.ERR, err)
 				}
 
+				// Iterate over the results from the target executable.
 				for _, result := range results {
 					key := fmt.Sprintf("%s:%s:%s", bp, exe, result)
 					value := 1
 
-					// Store the results in Redis.
+					// Store the target result in Redis.
 					result, err := Redis.Connection.Do("SETNX", key, value)
 					if err != nil {
+						// Report to Rollbar if there's an issue.
 						rollbar.Error(rollbar.ERR, err)
 					}
 
-					// The insert was successful (e.g. it didn't exist already)
+					// The insert was successful (e.g. it didn't exist already).
 					if result.(int64) != int64(0) {
-						// TODO: Send a notification to the buildpack owner.
 
-						// Open an issue on GitHub (work in progress).
+						// Open an issue on GitHub.
 						if !newTarget {
+
 							fmt.Println("Notifying", blue(bp.Owner), "about", red(key), ".")
+
 							success := openIssue(bp, key)
 							if !success {
-								// If writing out the issue was unsuccessful, delete the key from Redis.
+								// If opening the issue was unsuccessful, delete the key from Redis, for a re-try.
 								_, err := Redis.Connection.Do("DEL", key)
 								if err != nil {
+									// Report the error to Rollbar.
 									rollbar.Error(rollbar.ERR, err)
 								}
 							}
 						} else {
+							// If this is a "new" target, skip GitHub notifications.
 							fmt.Println("New target, skipping GitHub notifications.")
 						}
-
 					}
-
-					if err != nil {
-						rollbar.Error(rollbar.ERR, err)
-						log.Print(err)
-					}
-
 				}
 
 				// Log results.
