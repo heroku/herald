@@ -1,4 +1,6 @@
-worker:
+test:
+	go run cmd/herald-test/main.go
+run:
 	go run cmd/version-scraper/main.go
 
 bin-worker: compile
