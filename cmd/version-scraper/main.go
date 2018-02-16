@@ -14,8 +14,10 @@ import (
 	"time"
 )
 
-// GithubToken is Personal GitHub token. TODO: Create a bot account.
+// GithubToken is Personal GitHub token.
 var GithubToken = os.Getenv("GITHUB_TOKEN")
+
+// RollbarToken is provided by Heroku Addon.
 var RollbarToken = os.Getenv("ROLLBAR_ACCESS_TOKEN")
 
 // Opens an issue on GitHub for the given buildpack and new target.
