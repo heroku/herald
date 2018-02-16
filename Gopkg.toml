@@ -14,7 +14,7 @@
 
 [metadata.heroku]
   root-package = "github.com/heroku/herald"
-  go-version = "go1.9.2"
+  go-version = "go1.9.4"
   install = [ "./cmd/..."]
   ensure = "true"
 
