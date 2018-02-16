@@ -14,6 +14,10 @@ import (
 	"time"
 )
 
+// MinutesToSleep is the number of minutes the process sleeps after successfully
+// running all language scripts.
+var MinutesToSleep = 15
+
 // GithubToken is Personal GitHub token.
 var GithubToken = os.Getenv("GITHUB_TOKEN")
 
@@ -153,10 +157,10 @@ func main() {
 			}
 		}
 
-		log.Print(bold("Sleeping for 10 minutes…"))
+		log.Print(bold(fmt.Sprintf("Sleeping for %v minutes…", MinutesToSleep)))
 
 		// Sleep for ten minutes.
-		time.Sleep(10 * time.Minute)
+		time.Sleep(time.Duration(MinutesToSleep) * time.Minute)
 
 	}
 
