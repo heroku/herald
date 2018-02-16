@@ -1,5 +1,7 @@
 # Herald — Yielding Messages (for Languages) from Upon High
 
+![](https://travis-ci.com/heroku/herald.svg?token=7FY3Nqwfz5mTRqxuNHxx&branch=master)
+
 This application exists to empower Language Owners of new releases for their
 respective languages and supporting libraries.
 
