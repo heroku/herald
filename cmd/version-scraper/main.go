@@ -47,6 +47,7 @@ func openIssue(bp herald.Buildpack, target string) bool {
 	issue, _, err := client.Issues.Create(ctx, "heroku", bpName, &newIssue)
 	if err != nil {
 		fmt.Println("An error occurred creating the GitHub issue. Will try again")
+		rollbar.Error(rollbar.ERR, err)
 	} else {
 		fmt.Println(fmt.Sprintf("New issue created on %s buildpack on GitHub.", bp.Name))
 	}
