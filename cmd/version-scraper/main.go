@@ -147,7 +147,7 @@ func main() {
 
 					if err != nil {
 						rollbar.Error(rollbar.ERR, err)
-						log.Fatal(err)
+						log.Print(err)
 					}
 
 				}
