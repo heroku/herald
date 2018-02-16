@@ -7,6 +7,7 @@ import (
 	"github.com/garyburd/redigo/redis"
 	"github.com/google/go-github/github"
 	"github.com/heroku/herald"
+	"github.com/stvp/rollbar"
 	"golang.org/x/oauth2"
 	"log"
 	"os"
@@ -15,6 +16,7 @@ import (
 
 // GithubToken is Personal GitHub token. TODO: Create a bot account.
 var GithubToken = os.Getenv("GITHUB_TOKEN")
+var RollbarToken = os.Getenv("ROLLBAR_ACCESS_TOKEN")
 
 // Opens an issue on GitHub for the given buildpack and new target.
 //
@@ -57,6 +59,10 @@ func main() {
 	// Redis stuff.
 	Redis := herald.NewRedis("")
 
+	// Rollbar stuff.
+	rollbar.Token = RollbarToken
+	rollbar.Environment = "production"
+
 	// Color Stuff.
 	color.NoColor = false
 
@@ -96,7 +102,10 @@ func main() {
 				exe.EnsureExecutable()
 
 				// Execute the executable, print the results.
-				results := exe.Execute()
+				results, err := exe.Execute()
+				if err != nil {
+					rollbar.Error(rollbar.ERR, err)
+				}
 
 				for _, result := range results {
 					key := fmt.Sprintf("%s:%s:%s", bp, exe, result)
@@ -104,6 +113,9 @@ func main() {
 
 					// Store the results in Redis.
 					result, err := Redis.Connection.Do("SETNX", key, value)
+					if err != nil {
+						rollbar.Error(rollbar.ERR, err)
+					}
 
 					// The insert was successful (e.g. it didn't exist already)
 					if result.(int64) != int64(0) {
@@ -116,7 +128,9 @@ func main() {
 							if !success {
 								// If writing out the issue was unsuccessful, delete the key from Redis.
 								_, err := Redis.Connection.Do("DEL", key)
-								_ = err
+								if err != nil {
+									rollbar.Error(rollbar.ERR, err)
+								}
 							}
 						} else {
 							fmt.Println("New target, skipping GitHub notifications.")
@@ -125,6 +139,7 @@ func main() {
 					}
 
 					if err != nil {
+						rollbar.Error(rollbar.ERR, err)
 						log.Fatal(err)
 					}
 

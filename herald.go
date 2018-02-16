@@ -148,13 +148,13 @@ func (e Executable) EnsureExecutable() {
 }
 
 // Execute Executes the given executable, and returns results.
-func (e Executable) Execute() []string {
+func (e Executable) Execute() ([]string, error) {
 	out, err := exec.Command(e.Path).Output()
 	if err != nil {
 		// TODO: Update this to return, etc.
 		log.Fatal(err)
 	}
-	return strings.Split(strings.Trim(string(out), "\n"), "\n")
+	return strings.Split(strings.Trim(string(out), "\n"), "\n"), err
 
 }
 

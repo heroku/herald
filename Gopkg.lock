@@ -129,6 +129,12 @@
   revision = "a61a99592b77c9ba629d254a693acffaeb4b7e28"
 
 [[projects]]
+  name = "github.com/stvp/rollbar"
+  packages = ["."]
+  revision = "b20261800d8cda3be14dcef0d1a8320779bba61a"
+  version = "v0.5.1"
+
+[[projects]]
   name = "github.com/ulikunitz/xz"
   packages = [
     ".",
@@ -180,6 +186,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "c52cf21009f65e59e23de87241a797c6c48d7e018aafc1f37edf1f9403ba9387"
+  inputs-digest = "66f216da55122e2bdeccb44d15182200ff48bee768ba3ab20b617c7a06af102d"
   solver-name = "gps-cdcl"
   solver-version = 1
