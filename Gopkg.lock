@@ -100,6 +100,12 @@
   revision = "fc61389e27c71d120f87031ca8c88a3428f372dd"
 
 [[projects]]
+  branch = "master"
+  name = "github.com/heroku/herald"
+  packages = ["."]
+  revision = "fbd3cb7ab5f340ee558156704a87c479cedff809"
+
+[[projects]]
   name = "github.com/jmespath/go-jmespath"
   packages = ["."]
   revision = "0b12d6b5"
@@ -186,6 +192,6 @@
 [solve-meta]
   analyzer-name = "dep"
   analyzer-version = 1
-  inputs-digest = "66f216da55122e2bdeccb44d15182200ff48bee768ba3ab20b617c7a06af102d"
+  inputs-digest = "baacdf83216b959d4c87dc791bda3a16d71fa347ea289c13d5bb1c3823994084"
   solver-name = "gps-cdcl"
   solver-version = 1
