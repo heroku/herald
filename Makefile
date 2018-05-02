@@ -1,5 +1,5 @@
 test:
-	go run cmd/herald-test/main.go
+	go test
 run:
 	go run cmd/version-scraper/main.go
 

@@ -1,12 +1,12 @@
-FROM golang
+FROM golang:1.9.4
 
 RUN go get -u github.com/golang/dep/cmd/dep
 
-COPY Gopkg.toml Gopkg.lock /go/src/github.com/heroku/herald/
 WORKDIR /go/src/github.com/heroku/herald/
+COPY Gopkg.toml Gopkg.lock ./
 RUN dep ensure --vendor-only
 
-COPY ./ /go/src/github.com/heroku/herald/
+COPY ./ ./
 
 RUN go build
 
