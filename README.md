@@ -23,7 +23,7 @@ This system is written in the Go programming language.
 
 Herald assumes that you have a buildpack in a git repo that contains a `versions` branch, and in that versions branch there is a `versions` folder. In that folder it will look for executables. For example in the Ruby buildpack https://github.com/heroku/heroku-buildpack-ruby/tree/versions/versions.
 
-When the executable is run, it should print out an available version number. One per line. For example in the Ruby buildpack:
+When the executable is run, it should print out all available version numbers — one per line. For example in the Ruby buildpack:
 
 ```term
 $ versions/ruby
@@ -34,8 +34,6 @@ $ versions/ruby
 2.6.0-preview1
 #...
 ```
-
-The list of buildpacks is in a go "map" like a dict in Python or a hash in Ruby in `herald.go`.
 
 Once every 15 minutes the `herald/cmd/version-scraper/main.go` script will execute against all buildpacks and record the result in Redis. When it is detected that there is a new entry, then a new issue will be opened up on that buildpack.
 
