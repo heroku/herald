@@ -1,0 +1,10 @@
+version: '2'
+services:
+  service:
+    build: .
+    depends_on:
+      - redis
+    environment:
+      - REDIS_URL=redis://redis
+  redis:
+    image: redis:latest
